@@ -1,0 +1,172 @@
+[
+  {
+    "type": "Central Bank",
+    "counterparty": "AIDA - Abhu Dhabi Investment Authority",
+    "tier": "Diamond"
+  },
+  {
+    "type": "Central Bank",
+    "counterparty": "CB of United Emirates",
+    "tier": "Diamond"
+  },
+  {
+    "type": "Central Bank",
+    "counterparty": "CBC Taiwan - Central Bank Taiwan",
+    "tier": "Diamond"
+  },
+  {
+    "type": "Central Bank",
+    "counterparty": "Czeck National Bank",
+    "tier": "Diamond"
+  },
+  {
+    "type": "Central Bank",
+    "counterparty": "Kuwait International Office",
+    "tier": "Diamond"
+  },
+  {
+    "type": "Central Bank",
+    "counterparty": "Lithuania - CB Lithuania",
+    "tier": "Diamond"
+  },
+  {
+    "type": "Central Bank",
+    "counterparty": "National Pension Service - NPS Korea",
+    "tier": "Diamond"
+  },
+  {
+    "type": "Central Bank",
+    "counterparty": "Norges - Norway's Sovereign Wealth Fund",
+    "tier": "Diamond"
+  },
+  {
+    "type": "Central Bank",
+    "counterparty": "Poland - CB Poland",
+    "tier": "Diamond"
+  },
+  {
+    "type": "Domestic",
+    "counterparty": "1832 -1832 AM aka Scotia AM aka Dynamic Funds",
+    "tier": "Diamond"
+  },
+  {
+    "type": "Domestic",
+    "counterparty": "ACP - Air Canada Pension also called Trans Canada Capital or TCC",
+    "tier": "Diamond"
+  },
+  {
+    "type": "Domestic",
+    "counterparty": "BCIMC - British Columbia Investment Management Co",
+    "tier": "Diamond"
+  },
+  {
+    "type": "Domestic",
+    "counterparty": "Caisse de Depot & Placement de Quebec",
+    "tier": "Diamond"
+  },
+  {
+    "type": "Domestic",
+    "counterparty": "CCL - Connor Clark Lundin",
+    "tier": "Diamond"
+  },
+  {
+    "type": "Domestic",
+    "counterparty": "CGAM - CIBC Asset Management",
+    "tier": "Diamond"
+  },
+  {
+    "type": "Domestic",
+    "counterparty": "CIBC Treas",
+    "tier": "Diamond"
+  },
+  {
+    "type": "Domestic",
+    "counterparty": "CPP - Canada Pension Plan",
+    "tier": "Diamond"
+  },
+  {
+    "type": "Domestic",
+    "counterparty": "DGAM - Desjardin Asset Management",
+    "tier": "Diamond"
+  },
+  {
+    "type": "Domestic",
+    "counterparty": "Canada Life Assurance Company",
+    "tier": "Diamond"
+  },
+  {
+    "type": "Domestic",
+    "counterparty": "HOOP - Heathcare Ontario Pension Plan",
+    "tier": "Diamond"
+  },
+  {
+    "type": "Domestic",
+    "counterparty": "HQ Pension - Hydro Quebec Sinking Fund/Pension",
+    "tier": "Diamond"
+  },
+  {
+    "type": "Domestic",
+    "counterparty": "Industrial Alliance",
+    "tier": "Diamond"
+  },
+  {
+    "type": "Domestic",
+    "counterparty": "Mawer",
+    "tier": "Diamond"
+  },
+  {
+    "type": "Domestic",
+    "counterparty": "PHN - Philips Hagar",
+    "tier": "Diamond"
+  },
+  {
+    "type": "Domestic",
+    "counterparty": "PSP - Public Sector Pension",
+    "tier": "Diamond"
+  },
+  {
+    "type": "Domestic",
+    "counterparty": "RBIM - RBC Global Asset Management",
+    "tier": "Diamond"
+  },
+  {
+    "type": "Domestic",
+    "counterparty": "Sunlife",
+    "tier": "Diamond"
+  },
+  {
+    "type": "Domestic",
+    "counterparty": "TDAM - TD Asset Management",
+    "tier": "Diamond"
+  },
+  {
+    "type": "International",
+    "counterparty": "Aviva",
+    "tier": "Diamond"
+  },
+  {
+    "type": "International",
+    "counterparty": "Blackrock",
+    "tier": "Diamond"
+  },
+  {
+    "type": "International",
+    "counterparty": "Fidelity",
+    "tier": "Diamond"
+  },
+  {
+    "type": "International",
+    "counterparty": "PIMCO",
+    "tier": "Diamond"
+  },
+  {
+    "type": "International",
+    "counterparty": "SARB - South African Reserve Bank",
+    "tier": "Diamond"
+  },
+  {
+    "type": "International",
+    "counterparty": "Vaguard",
+    "tier": "Diamond"
+  }
+]

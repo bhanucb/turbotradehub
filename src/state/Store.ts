@@ -1,5 +1,4 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import popoutReducer from "./PopupSlice";
 import {
   FLUSH,
   PAUSE,
@@ -16,28 +15,17 @@ import {
   createStateSyncMiddleware,
   initMessageListener,
 } from "redux-state-sync";
-import sandboxReducer from "./SandboxSlice";
 import themeReducer from "./ThemeSlice";
-import layoutReducer from "./LayoutSlice";
-import pricingSheetReducer from "./PricingSheetSlice";
-import tabManagementReducer from "./TabManagementSlice";
-import tradeBookingReducer from "./TradeBookingSlice";
 
 const persistReducerConfig = {
   key: "root",
   version: 1,
   storage,
-  blacklist: ["pricingSheet", "tabManagement", "layout", "tradeBooking"],
+  blacklist: [],
 };
 
 const rootReducer = combineReducers({
-  popouts: popoutReducer,
-  sandbox: sandboxReducer,
   theme: themeReducer,
-  layout: layoutReducer,
-  pricingSheet: pricingSheetReducer,
-  tabManagement: tabManagementReducer,
-  tradeBooking: tradeBookingReducer,
 });
 
 const persistedReducer = persistReducer(persistReducerConfig, rootReducer);
@@ -62,7 +50,7 @@ export const store = configureStore({
 
 initMessageListener(store);
 
-export let persistor = persistStore(store);
+export const persistor = persistStore(store);
 
 type RootState = ReturnType<typeof store.getState>;
 type AppDispatch = typeof store.dispatch;

@@ -24,7 +24,7 @@ const NotFound: FC = () => {
   return (
     <Background>
       <AppLogo />
-      <Title noWrap>Interactive Pricing Alpha</Title>
+      <Title noWrap>Turbo Trade Hub</Title>
       <br />
       <Typography variant="h5">Page Not Found</Typography>
       <NavLink to="/">

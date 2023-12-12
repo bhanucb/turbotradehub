@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Drawer from "@mui/material/Drawer";
@@ -7,11 +7,6 @@ import Divider from "@mui/material/Divider";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import { ThemeSection } from "./ThemeSection";
-import LayoutSection from "./LayoutSection";
-import SandboxModeSection from "./SandboxModeSection";
-import { BASENAME } from "../../App";
-import { removeSlashes } from "../../utils/Misc";
-import LogoutSection from "./LogoutSection";
 
 const DrawerHeader = styled(Box)`
   display: flex;
@@ -34,8 +29,6 @@ export type RightDrawerProps = {
 
 const RightDrawer: FC<RightDrawerProps> = (props) => {
   const [open, setOpen] = useState(false);
-  const isHome =
-    removeSlashes(window.location.pathname) === removeSlashes(BASENAME);
 
   useEffect(() => {
     const { onReady } = props;
@@ -45,19 +38,6 @@ const RightDrawer: FC<RightDrawerProps> = (props) => {
   function toggleDrawer() {
     setOpen((prev) => !prev);
   }
-
-  const PageSpecificSections: FC = useCallback(() => {
-    if (isHome) {
-      return (
-        <>
-          <LayoutSection toggleDrawer={toggleDrawer} />
-          <SandboxModeSection toggleDrawer={toggleDrawer} />
-        </>
-      );
-    }
-
-    return <></>;
-  }, [toggleDrawer, isHome]);
 
   return (
     <Drawer anchor={"right"} open={open} onClose={toggleDrawer}>
@@ -72,9 +52,7 @@ const RightDrawer: FC<RightDrawerProps> = (props) => {
       <Divider />
       <Box sx={{ width: { xs: 350, md: 450 } }} role="presentation">
         <ThemeSection />
-        <PageSpecificSections />
       </Box>
-      <LogoutSection />
     </Drawer>
   );
 };

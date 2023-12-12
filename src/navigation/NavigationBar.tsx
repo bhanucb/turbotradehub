@@ -5,33 +5,18 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import RightDrawer, { RightDrawerApi } from "./rightDrawer/RightDrawer";
-import {
-  Button,
-  Menu,
-  MenuItem,
-  SxProps,
-  Theme,
-  Tooltip,
-  useTheme,
-} from "@mui/material";
-import { useAppSelector } from "../state/Store";
+import { Button, Menu, MenuItem, SxProps, Theme } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { BASENAME } from "../App";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import SettingsIcon from "@mui/icons-material/Settings";
-import SyncDisabledIcon from "@mui/icons-material/SyncDisabled";
 import { NAVBAR_LINKS } from "./NavigationRoutes";
 import AppLogo from "../components/AppLogo";
-import { cibcBackgroundColor } from "../Colors";
 
 function NavigationBar() {
-  const { isSandboxModeOn } = useAppSelector((state) => state.sandbox);
   const [rightDrawerApi, setRightDrawerApi] = useState<RightDrawerApi>();
   const navigate = useNavigate();
-  const {
-    palette: { mode },
-  } = useTheme();
 
   function handleRightDrawerReady({ api }: { api: RightDrawerApi }) {
     setRightDrawerApi(api);
@@ -100,7 +85,7 @@ function NavigationBar() {
           <AppLogo />
         </Box>
         <Typography noWrap component="a" href={BASENAME} sx={sx}>
-          Interactive Pricing Alpha
+          Turbo Trade Hub
         </Typography>
       </>
     );
@@ -149,20 +134,12 @@ function NavigationBar() {
   };
 
   return (
-    <AppBar
-      position="static"
-      sx={mode === "light" ? { backgroundColor: cibcBackgroundColor } : {}}
-    >
+    <AppBar position="static">
       <Toolbar>
         <NavTitle />
         <ResponsiveMenu />
         <NavTitle responsive />
         <NavLinks />
-        {isSandboxModeOn && (
-          <Tooltip title={"Sandbox Mode On"}>
-            <SyncDisabledIcon color="error" />
-          </Tooltip>
-        )}
         <IconButton
           size="large"
           edge="end"

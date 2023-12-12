@@ -11,7 +11,7 @@ export const pricingChangesGridColDefs: Array<ColDef<StockData>> = [
   //   sortable: false,
   //   filter: false,
   // },
-  { headerName: "Symbol", field: "symbol", sort: "asc" },
+  { headerName: "Symbol", field: "symbol", sort: "asc", minWidth: 150 },
   { headerName: "Price", field: "price" },
   { headerName: "Bid", field: "bid" },
   { headerName: "Ask", field: "ask" },

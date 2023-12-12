@@ -16,3 +16,9 @@ export function hasPageReloaded() {
   )[0] as PerformanceNavigationTiming;
   return performanceNavigationTiming.type === "reload";
 }
+
+export function camelCaseToTitleCase(str: string) {
+  return str
+    .replace(/([A-Z])/g, " $1")
+    .replace(/^./, (str) => str.toUpperCase());
+}

@@ -1,5 +1,6 @@
 import { ColDef } from "ag-grid-community";
 import { StockData } from "../../api/StockData";
+import { CurrencyPair } from "../../api/CurrencyPair";
 
 export const pricingChangesGridColDefs: Array<ColDef<StockData>> = [
   // {
@@ -16,9 +17,9 @@ export const pricingChangesGridColDefs: Array<ColDef<StockData>> = [
   { headerName: "Ask", field: "ask" },
 ];
 
-export const topMoversGridColDefs: Array<ColDef<StockData>> = [
+export const topMoversGridColDefs: Array<ColDef<CurrencyPair>> = [
   { headerName: "Symbol", field: "symbol" },
-  { headerName: "Last Price", field: "price" },
+  { headerName: "Last", field: "lastPrice" },
   {
     headerName: "Net",
     field: "net",
@@ -26,7 +27,7 @@ export const topMoversGridColDefs: Array<ColDef<StockData>> = [
   },
   {
     headerName: "% NC",
-    field: "netChangePercentage",
+    field: "netChange",
     sort: "desc",
     valueFormatter: (params) =>
       params.value ? `${params.value.toFixed(2)}%` : params.value,

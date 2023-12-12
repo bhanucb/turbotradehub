@@ -8,18 +8,18 @@ import {
 } from "ag-grid-community";
 import { styled } from "@mui/material/styles";
 import AppGrid from "../../components/AppGrid";
-import { getStockData, StockData } from "../../api/StockData";
-import { pricingChangesGridColDefs } from "./GridColDefs";
+import { topMoversGridColDefs } from "./GridColDefs";
+import { CurrencyPair, getCurrencyPairs } from "../../api/CurrencyPair";
 
 const StyledPricingSheetGrid = styled("div")`
   height: 100%;
 `;
 
-const PriceChangesGrid: FC = () => {
+const TopMoversGrid: FC = () => {
   const columnApi = useRef<ColumnApi>();
   const gridApi = useRef<GridApi>();
-  const [rowData, setRowData] = useState<Array<StockData>>([]);
-  const colDefs = useRef<Array<ColDef>>(pricingChangesGridColDefs);
+  const [rowData, setRowData] = useState<Array<CurrencyPair>>([]);
+  const colDefs = useRef<Array<ColDef>>(topMoversGridColDefs);
   const defaultColDef = useMemo<ColDef>(
     () => ({
       flex: 1,
@@ -40,7 +40,7 @@ const PriceChangesGrid: FC = () => {
   }
 
   useEffect(() => {
-    getStockData().then((data) => setRowData(data));
+    getCurrencyPairs().then((data) => setRowData(data));
   }, []);
 
   return (
@@ -57,4 +57,4 @@ const PriceChangesGrid: FC = () => {
   );
 };
 
-export default PriceChangesGrid;
+export default TopMoversGrid;

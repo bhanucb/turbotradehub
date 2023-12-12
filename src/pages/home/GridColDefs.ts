@@ -33,3 +33,19 @@ export const topMoversGridColDefs: Array<ColDef<CurrencyPair>> = [
       params.value ? `${params.value.toFixed(2)}%` : params.value,
   },
 ];
+
+export const fxQuoteMatrixColDefs: Array<ColDef<CurrencyPair>> = [
+  { headerName: "Symbol", field: "symbol", sort: "asc" },
+  { headerName: "Last", field: "lastPrice" },
+  {
+    headerName: "Net",
+    field: "net",
+    valueFormatter: (params) => (params.value ? params.value.toFixed(2) : null),
+  },
+  {
+    headerName: "% NC",
+    field: "netChange",
+    valueFormatter: (params) =>
+      params.value ? `${params.value.toFixed(2)}%` : params.value,
+  },
+];

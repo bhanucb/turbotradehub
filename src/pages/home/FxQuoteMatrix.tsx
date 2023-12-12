@@ -8,18 +8,18 @@ import {
 } from "ag-grid-community";
 import { styled } from "@mui/material/styles";
 import AppGrid from "../../components/AppGrid";
-import { getStockData, StockData } from "../../api/StockData";
-import { pricingChangesGridColDefs } from "./GridColDefs";
+import { fxQuoteMatrixColDefs } from "./GridColDefs";
+import { DynamicCurrencyPair, getFxQuotes } from "../../api/CurrencyPair";
 
 const StyledGrid = styled("div")`
   height: 100%;
 `;
 
-const PriceChangesGrid: FC = () => {
+const FxQuoteMatrix: FC = () => {
   const columnApi = useRef<ColumnApi>();
   const gridApi = useRef<GridApi>();
-  const [rowData, setRowData] = useState<Array<StockData>>([]);
-  const colDefs = useRef<Array<ColDef>>(pricingChangesGridColDefs);
+  const [rowData, setRowData] = useState<Array<DynamicCurrencyPair>>([]);
+  const [colDefs, setColDefs] = useState<Array<ColDef>>(fxQuoteMatrixColDefs);
   const defaultColDef = useMemo<ColDef>(
     () => ({
       flex: 1,
@@ -40,14 +40,27 @@ const PriceChangesGrid: FC = () => {
   }
 
   useEffect(() => {
-    getStockData().then((data) => setRowData(data));
+    getFxQuotes().then((data) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { id, symbol, net, netChange, lastPrice, ...otherFields } = data[0];
+      const defs = Object.keys(otherFields).map(
+        (currencyPair) =>
+          ({
+            headerName: currencyPair.toUpperCase(),
+            field: currencyPair,
+          } as ColDef)
+      );
+      setColDefs([...fxQuoteMatrixColDefs, ...defs]);
+
+      setRowData(data);
+    });
   }, []);
 
   return (
     <StyledGrid>
       <AppGrid
         rowData={rowData}
-        columnDefs={colDefs.current}
+        columnDefs={colDefs}
         defaultColDef={defaultColDef}
         animateRows={true}
         getRowId={getRowId}
@@ -57,4 +70,4 @@ const PriceChangesGrid: FC = () => {
   );
 };
 
-export default PriceChangesGrid;
+export default FxQuoteMatrix;

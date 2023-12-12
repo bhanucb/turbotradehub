@@ -8,6 +8,10 @@ export interface CurrencyPair {
   netChange: number;
 }
 
+export type DynamicCurrencyPair = CurrencyPair | { [key in string]: number };
+
+const PAIR_COUNT = 100;
+
 function generateFakeCurrencyPairData(): CurrencyPair {
   const id = faker.datatype.uuid();
   const symbol = faker.finance.currencyCode() + faker.finance.currencyCode();
@@ -34,6 +38,29 @@ function generateFakeCurrencyPairDataSet(count: number): CurrencyPair[] {
 
 export function getCurrencyPairs(): Promise<Array<CurrencyPair>> {
   return new Promise((resolve) =>
-    setTimeout(() => resolve(generateFakeCurrencyPairDataSet(50)), 550)
+    setTimeout(() => resolve(generateFakeCurrencyPairDataSet(PAIR_COUNT)), 550)
   );
+}
+
+export function getFxQuotes(): Promise<Array<DynamicCurrencyPair>> {
+  const currencyPairs = generateFakeCurrencyPairDataSet(PAIR_COUNT);
+  const symbols = currencyPairs
+    .map((c) => c.symbol)
+    .sort((a, b) => a.localeCompare(b));
+
+  const getPairs = () =>
+    symbols.reduce((prev, cur) => {
+      const symbol = cur.toLowerCase();
+      const next = { [symbol]: parseFloat(faker.finance.amount(1, 2, 4)) };
+      return { ...prev, ...next };
+    }, {} as { [key in string]: number });
+
+  const newData = currencyPairs.reduce((prev, cur) => {
+    const pairs = getPairs();
+    const curAs = cur;
+    const newPair = { ...curAs, ...pairs };
+    return [...prev, newPair];
+  }, [] as Array<DynamicCurrencyPair>);
+
+  return new Promise((resolve) => setTimeout(() => resolve(newData), 555));
 }

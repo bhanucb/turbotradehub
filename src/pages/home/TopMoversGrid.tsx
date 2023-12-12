@@ -11,7 +11,7 @@ import AppGrid from "../../components/AppGrid";
 import { topMoversGridColDefs } from "./GridColDefs";
 import { CurrencyPair, getCurrencyPairs } from "../../api/CurrencyPair";
 
-const StyledPricingSheetGrid = styled("div")`
+const StyledGrid = styled("div")`
   height: 100%;
 `;
 
@@ -44,7 +44,7 @@ const TopMoversGrid: FC = () => {
   }, []);
 
   return (
-    <StyledPricingSheetGrid>
+    <StyledGrid>
       <AppGrid
         rowData={rowData}
         columnDefs={colDefs.current}
@@ -53,7 +53,7 @@ const TopMoversGrid: FC = () => {
         getRowId={getRowId}
         onGridReady={handleGridReady}
       />
-    </StyledPricingSheetGrid>
+    </StyledGrid>
   );
 };
 

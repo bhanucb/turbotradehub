@@ -6,15 +6,30 @@ export interface StockData {
   price: number;
   bid: number;
   ask: number;
+  net: number;
+  netChange: number;
+  netChangePercentage: number;
 }
 
 function generateFakeStockData(): StockData {
+  const id = faker.datatype.uuid();
+  const price = parseFloat(faker.finance.amount(50, 3000, 2));
+  const bid = parseFloat(faker.finance.amount(50, price, 2));
+  const ask = parseFloat(faker.finance.amount(price, 3000, 2));
+
+  const net = price - bid;
+  const netChange = ask - bid;
+  const netChangePercentage = netChange / 100;
+
   return {
-    id: faker.datatype.uuid(),
+    id,
     symbol: faker.random.word().toUpperCase(),
-    price: parseFloat(faker.finance.amount(50, 3000, 2)),
-    bid: parseFloat(faker.finance.amount(50, 3000, 2)),
-    ask: parseFloat(faker.finance.amount(50, 3000, 2)),
+    price,
+    bid,
+    ask,
+    net,
+    netChange,
+    netChangePercentage,
   };
 }
 

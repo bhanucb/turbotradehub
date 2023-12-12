@@ -8,18 +8,21 @@ import {
 } from "ag-grid-community";
 import { styled } from "@mui/material/styles";
 import AppGrid from "../../components/AppGrid";
-import { pricingChangesGridColDefs } from "./PricingChangesGridColDefs";
 import { getStockData, StockData } from "../../api/StockData";
 
 const StyledPricingSheetGrid = styled("div")`
   height: 100%;
 `;
 
-const PriceChangesGrid: FC = () => {
+type PriceChangesGridProp = {
+  columnDefs: Array<ColDef>;
+};
+
+const PriceChangesGrid: FC<PriceChangesGridProp> = (props) => {
+  const { columnDefs } = props;
   const columnApi = useRef<ColumnApi>();
   const gridApi = useRef<GridApi>();
   const [rowData, setRowData] = useState<Array<StockData>>([]);
-  const [columnDefs] = useState<Array<ColDef>>(pricingChangesGridColDefs);
   const defaultColDef = useMemo<ColDef>(
     () => ({
       flex: 1,

@@ -15,3 +15,20 @@ export const pricingChangesGridColDefs: Array<ColDef<StockData>> = [
   { headerName: "Bid", field: "bid" },
   { headerName: "Ask", field: "ask" },
 ];
+
+export const topMoversGridColDefs: Array<ColDef<StockData>> = [
+  { headerName: "Symbol", field: "symbol" },
+  { headerName: "Last Price", field: "price" },
+  {
+    headerName: "Net",
+    field: "net",
+    valueFormatter: (params) => (params.value ? params.value.toFixed(2) : null),
+  },
+  {
+    headerName: "% NC",
+    field: "netChangePercentage",
+    sort: "desc",
+    valueFormatter: (params) =>
+      params.value ? `${params.value.toFixed(2)}%` : params.value,
+  },
+];

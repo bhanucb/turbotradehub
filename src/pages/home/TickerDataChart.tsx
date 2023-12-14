@@ -24,82 +24,22 @@ const StyledChart = styled(Box)`
   width: 100%;
   display: flex;
   flex-direction: column;
-
-  .stat-text {
-    display: flex;
-    align-items: flex-end;
-
-    & .left-space {
-      margin-left: 16px;
-    }
-
-    & .prices {
-      justify-content: space-between;
-      max-width: 400px;
-    }
-
-    & .last-price {
-      padding-right: 8px;
-    }
-
-    & .change {
-      display: flex;
-      align-items: flex-end;
-      margin-left: 16px;
-      min-width: 120px;
-      justify-content: space-between;
-    }
-  }
-
-  .stat-grid {
-    width: 80%;
-  }
 `;
 
-const StatGrid: FC<{ tickerInfo: Omit<Partial<TickerInfo>, "history"> }> = ({
-  tickerInfo,
-}) => {
-  const tickerData = Object.entries(tickerInfo);
-  const leftColumns = tickerData.slice(0, tickerData.length / 2);
-  const rightColumns = tickerData.slice(tickerData.length / 2);
-  return (
-    <Grid container spacing={2} className="stat-grid">
-      <StatGridColumn tickerData={leftColumns} />
-      <StatGridColumn tickerData={rightColumns} />
-    </Grid>
-  );
-};
-const StatGridColumn: FC<{ tickerData: Array<[string, number | string]> }> = ({
-  tickerData,
-}) => {
-  return (
-    <Grid xs={6}>
-      <Stack>
-        {tickerData.map(([field, value], index) => (
-          <StatRow key={index} field={field} value={value} />
-        ))}
-      </Stack>
-    </Grid>
-  );
-};
-const StatRow: FC<{ field: string; value: number | string }> = ({
-  field,
-  value,
-}) => {
-  return (
-    <Stack direction="row" spacing={1}>
-      <Typography variant="body1">{camelCaseToTitleCase(field)}:</Typography>
-      <Typography variant="body1">{value}</Typography>
-    </Stack>
-  );
-};
 const TickerDataChart: FC = () => {
   const [tickerData, setTickerData] = useState<Omit<TickerInfo, "history">>(
     {} as TickerInfo
   );
   const [history, setHistory] = useState<Array<TickerHistoryData>>([]);
-  const { symbol, name, lastPrice, change, changePercent, ...otherTickerData } =
-    tickerData;
+  const {
+    symbol,
+    name,
+    lastPrice,
+    change,
+    changePercent,
+    sector,
+    ...otherTickerData
+  } = tickerData;
 
   useEffect(() => {
     getTickerData("AMZUS").then((data) => {
@@ -113,39 +53,59 @@ const TickerDataChart: FC = () => {
   return (
     <StyledChart>
       <Box className="stat-text">
-        <Typography variant="h5">{symbol}</Typography>
-        <Typography variant="h6" className="left-space">
-          {name}
-        </Typography>
+        <Stack direction="row" spacing={2} alignItems="flex-end">
+          <Typography variant="h5">{symbol}</Typography>
+          <Typography variant="h4">{lastPrice}</Typography>
+          <Typography variant="h6">{change}</Typography>
+          <Typography variant="h6">({changePercent}%)</Typography>
+        </Stack>
+        {/*<Stack direction="row" spacing={2} alignItems="flex-end">*/}
+        {/*  <Typography variant="h6">{name}</Typography>*/}
+        {/*  <Typography variant="h6">{camelCaseToTitleCase(sector)}</Typography>*/}
+        {/*</Stack>*/}
       </Box>
-      <Box className="stat-text prices">
-        <Typography variant="h5">{lastPrice}</Typography>
-        <Typography variant="h6" className="left-space">
-          {change}
-        </Typography>
-        <Typography variant="h6" className="left-space">
-          {changePercent}
-        </Typography>
-      </Box>
-      <StatGrid tickerInfo={otherTickerData} />
-      <LineChart
-        width={1080}
-        height={480}
-        data={history}
-        margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="date" />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        <Line
-          type="monotone"
-          dataKey="lastPrice"
-          stroke="#8884d8"
-          activeDot={{ r: 8 }}
-        />
-      </LineChart>
+      <Box className="stat-text prices"></Box>
+      <Grid container spacing={2} className="stat-grid">
+        <Grid xs={4}>
+          <Stack>
+            {Object.entries(otherTickerData).map(([key, value], index) => {
+              return (
+                <Stack
+                  key={index}
+                  direction="row"
+                  justifyContent="space-between"
+                >
+                  <Typography variant="body1">
+                    {camelCaseToTitleCase(key)}
+                  </Typography>
+                  <Typography variant="body1">{value}</Typography>
+                </Stack>
+              );
+            })}
+          </Stack>
+        </Grid>
+        <Grid xs={8}>
+          <LineChart
+            width={800}
+            height={350}
+            data={history}
+            margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="date" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Line
+              type="monotone"
+              dataKey="lastPrice"
+              stroke="#8884d8"
+              activeDot={{ r: 8 }}
+            />
+          </LineChart>
+        </Grid>
+      </Grid>
+      {/*<StatGrid tickerInfo={otherTickerData} />*/}
     </StyledChart>
   );
 };

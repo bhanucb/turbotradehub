@@ -129,8 +129,8 @@ const TickerDataChart: FC = () => {
       </Box>
       <StatGrid tickerInfo={otherTickerData} />
       <LineChart
-        width={800}
-        height={400}
+        width={1080}
+        height={480}
         data={history}
         margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
       >

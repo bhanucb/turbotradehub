@@ -1,34 +1,69 @@
 import { FC } from "react";
-import PriceChangesGrid from "./PriceChangesGrid";
-import TopMoversGrid from "./TopMoversGrid";
 import { styled } from "@mui/material/styles";
-import { Paper } from "@mui/material";
+import { Box, Paper } from "@mui/material";
 import { NAVIGATION_BAR_HEIGHT } from "../../navigation/Constants";
-import Grid from "@mui/material/Unstable_Grid2";
-import FxQuoteMatrix from "./FxQuoteMatrix";
+import PriceChangesGrid from "./PriceChangesGrid";
 import TickerDataChart from "./TickerDataChart";
+import FxQuoteMatrix from "./FxQuoteMatrix";
+import TopMoversGrid from "./TopMoversGrid";
 
 const Page = styled(Paper)`
   height: calc(100vh - (${NAVIGATION_BAR_HEIGHT}px));
   border-radius: 0;
+  display: flex;
+  flex-direction: column;
+
+  .row {
+    display: flex;
+    height: 50%;
+
+    &.top {
+      margin-top: 16px;
+      margin-bottom: 8px;
+    }
+
+    &.bottom {
+      margin-bottom: 16px;
+      margin-top: 8px;
+    }
+  }
+
+  .column {
+    overflow: auto;
+
+    &.left {
+      width: 70%;
+      margin-left: 16px;
+      margin-right: 8px;
+    }
+
+    &.right {
+      width: 30%;
+      margin-right: 16px;
+      margin-left: 8px;
+    }
+  }
 `;
+
 const Home: FC = () => {
   return (
     <Page>
-      <Grid container style={{ height: "100%" }}>
-        <Grid xs={4} p={1}>
-          <PriceChangesGrid />
-        </Grid>
-        <Grid xs={8} p={1}>
+      <Box className="row top">
+        <Box className="column left">
           <TickerDataChart />
-        </Grid>
-        <Grid xs={8} p={1}>
+        </Box>
+        <Box className="column right">
+          <PriceChangesGrid />
+        </Box>
+      </Box>
+      <Box className="row bottom">
+        <Box className="column left">
           <FxQuoteMatrix />
-        </Grid>
-        <Grid xs={4} p={1}>
+        </Box>
+        <Box className="column right">
           <TopMoversGrid />
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
     </Page>
   );
 };

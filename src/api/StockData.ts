@@ -1,4 +1,7 @@
 import * as faker from "faker";
+import { interval, map } from "rxjs";
+
+const ROW_COUNT = 10;
 
 export interface StockData {
   id: string;
@@ -11,8 +14,7 @@ export interface StockData {
   netChangePercentage: number;
 }
 
-function generateFakeStockData(): StockData {
-  const id = faker.datatype.uuid();
+const generateFakeStockDataPoints = () => {
   const price = parseFloat(faker.finance.amount(50, 3000, 2));
   const bid = parseFloat(faker.finance.amount(50, price, 2));
   const ask = parseFloat(faker.finance.amount(price, 3000, 2));
@@ -21,8 +23,15 @@ function generateFakeStockData(): StockData {
   const netChange = ask - bid;
   const netChangePercentage = netChange / 100;
 
+  return { price, bid, ask, net, netChange, netChangePercentage };
+};
+
+function generateFakeStockData(): StockData {
+  const { price, bid, ask, net, netChange, netChangePercentage } =
+    generateFakeStockDataPoints();
+
   return {
-    id,
+    id: faker.datatype.uuid(),
     symbol: faker.random.word().toUpperCase(),
     price,
     bid,
@@ -33,16 +42,33 @@ function generateFakeStockData(): StockData {
   };
 }
 
-function generateFakeStockDataSet(count: number): StockData[] {
+function generateFakeStockDataSet(): StockData[] {
   const dataSet: StockData[] = [];
-  for (let i = 0; i < count; i++) {
+  for (let i = 0; i < ROW_COUNT; i++) {
     dataSet.push(generateFakeStockData());
   }
   return dataSet;
 }
 
-export function getStockData(): Promise<Array<StockData>> {
-  return new Promise((resolve) =>
-    setTimeout(() => resolve(generateFakeStockDataSet(10)), 550)
+const dataset = generateFakeStockDataSet();
+
+export function getStockDataLive() {
+  return interval(1000).pipe(
+    map(() =>
+      dataset.map((stockData) => {
+        const { price, bid, ask, net, netChange, netChangePercentage } =
+          generateFakeStockDataPoints();
+
+        return {
+          ...stockData,
+          price,
+          bid,
+          ask,
+          net,
+          netChange,
+          netChangePercentage,
+        };
+      })
+    )
   );
 }

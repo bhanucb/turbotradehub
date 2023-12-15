@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useRef } from "react";
 import {
   ColDef,
   ColumnApi,
@@ -8,8 +8,9 @@ import {
 } from "ag-grid-community";
 import { styled } from "@mui/material/styles";
 import AppGrid from "../../components/AppGrid";
-import { getStockData, StockData } from "../../api/StockData";
+import { getStockDataLive } from "../../api/StockData";
 import { pricingChangesGridColDefs } from "./GridColDefs";
+import { first, skip } from "rxjs";
 
 const StyledGrid = styled("div")`
   height: 100%;
@@ -18,7 +19,6 @@ const StyledGrid = styled("div")`
 const PriceChangesGrid: FC = () => {
   const columnApi = useRef<ColumnApi>();
   const gridApi = useRef<GridApi>();
-  const [rowData, setRowData] = useState<Array<StockData>>([]);
   const colDefs = useRef<Array<ColDef>>(pricingChangesGridColDefs);
   const defaultColDef = useMemo<ColDef>(
     () => ({
@@ -40,13 +40,27 @@ const PriceChangesGrid: FC = () => {
   }
 
   useEffect(() => {
-    getStockData().then((data) => setRowData(data));
+    const firstSub = getStockDataLive()
+      .pipe(first())
+      .subscribe((data) => {
+        gridApi.current?.setRowData(data);
+      });
+
+    const sub = getStockDataLive()
+      .pipe(skip(1))
+      .subscribe((data) => {
+        gridApi.current?.applyTransaction({ update: data });
+      });
+
+    return () => {
+      firstSub.unsubscribe();
+      sub.unsubscribe();
+    };
   }, []);
 
   return (
     <StyledGrid>
       <AppGrid
-        rowData={rowData}
         columnDefs={colDefs.current}
         defaultColDef={defaultColDef}
         animateRows={true}

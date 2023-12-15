@@ -24,6 +24,24 @@ const StyledChart = styled(Box)`
   width: 100%;
   display: flex;
   flex-direction: column;
+
+  .last-price {
+    font-weight: bold;
+  }
+  .negative-change {
+    color: red;
+  }
+
+  .positive-change {
+    color: green;
+  }
+
+  .grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+  }
 `;
 
 const TickerDataChart: FC = () => {
@@ -55,9 +73,25 @@ const TickerDataChart: FC = () => {
       <Box className="stat-text">
         <Stack direction="row" spacing={2} alignItems="flex-end">
           <Typography variant="h5">{symbol}</Typography>
-          <Typography variant="h4">{lastPrice}</Typography>
-          <Typography variant="h6">{change}</Typography>
-          <Typography variant="h6">({changePercent}%)</Typography>
+          <Typography variant="h4" className="last-price">
+            {lastPrice}
+          </Typography>
+          <Typography
+            variant="h6"
+            className={change < 0 ? "negative-change" : "positive-change"}
+          >
+            {change > 0 && "+"}
+            {change}
+          </Typography>
+          <Typography
+            variant="h6"
+            className={
+              changePercent < 0 ? "negative-change" : "positive-change"
+            }
+          >
+            ({changePercent > 0 && "+"}
+            {changePercent}%)
+          </Typography>
         </Stack>
         {/*<Stack direction="row" spacing={2} alignItems="flex-end">*/}
         {/*  <Typography variant="h6">{name}</Typography>*/}
@@ -66,9 +100,11 @@ const TickerDataChart: FC = () => {
       </Box>
       <Box className="stat-text prices"></Box>
       <Grid container spacing={2} className="stat-grid">
-        <Grid xs={4}>
+        <Grid xs={3}>
           <Stack>
             {Object.entries(otherTickerData).map(([key, value], index) => {
+              const formattedValue =
+                typeof value === "number" ? value.toLocaleString() : value;
               return (
                 <Stack
                   key={index}
@@ -78,13 +114,13 @@ const TickerDataChart: FC = () => {
                   <Typography variant="body1">
                     {camelCaseToTitleCase(key)}
                   </Typography>
-                  <Typography variant="body1">{value}</Typography>
+                  <Typography variant="body1">{formattedValue}</Typography>
                 </Stack>
               );
             })}
           </Stack>
         </Grid>
-        <Grid xs={8}>
+        <Grid xs={9} className="grid">
           <LineChart
             width={800}
             height={350}

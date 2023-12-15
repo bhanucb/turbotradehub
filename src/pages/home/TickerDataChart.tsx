@@ -10,6 +10,7 @@ import {
   Line,
   LineChart,
   Tooltip,
+  TooltipProps,
   XAxis,
   YAxis,
 } from "recharts";
@@ -17,7 +18,7 @@ import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Unstable_Grid2";
-import { Stack } from "@mui/material";
+import { Paper, Stack } from "@mui/material";
 import { camelCaseToTitleCase } from "../../utils/Misc";
 
 const StyledChart = styled(Box)`
@@ -41,6 +42,17 @@ const StyledChart = styled(Box)`
     flex-direction: column;
     align-items: center;
     overflow: hidden;
+  }
+
+  .tooltip {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px;
+
+    &.value {
+      font-weight: bold;
+    }
   }
 `;
 
@@ -68,9 +80,30 @@ const TickerDataChart: FC = () => {
     });
   }, []);
 
+  const CustomTooltip = ({
+    active,
+    payload,
+    label,
+  }: TooltipProps<number, string>) => {
+    if (active && payload && payload.length > 0 && label) {
+      return (
+        <Paper className="tooltip">
+          <Typography variant="caption">{label}</Typography>
+          <Typography className="value">
+            {payload[0].value?.toLocaleString() ?? 0}
+          </Typography>
+          {/*<p className="intro">{getIntroOfPage(label)}</p>*/}
+          {/*<p className="desc">Anything you want can be displayed here.</p>*/}
+        </Paper>
+      );
+    }
+
+    return null;
+  };
+
   return (
     <StyledChart>
-      <Box className="stat-text">
+      <Box>
         <Stack direction="row" spacing={2} alignItems="flex-end">
           <Typography variant="h5">{symbol}</Typography>
           <Typography variant="h4" className="last-price">
@@ -98,7 +131,6 @@ const TickerDataChart: FC = () => {
         {/*  <Typography variant="h6">{camelCaseToTitleCase(sector)}</Typography>*/}
         {/*</Stack>*/}
       </Box>
-      <Box className="stat-text prices"></Box>
       <Grid container spacing={2} className="stat-grid">
         <Grid xs={3}>
           <Stack>
@@ -130,7 +162,7 @@ const TickerDataChart: FC = () => {
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="date" />
             <YAxis />
-            <Tooltip />
+            <Tooltip content={<CustomTooltip />} />
             <Legend />
             <Line
               type="monotone"

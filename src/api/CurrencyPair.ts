@@ -1,4 +1,5 @@
 import * as faker from "faker";
+import { interval, map, Observable } from "rxjs";
 
 export interface CurrencyPair {
   id: string;
@@ -36,10 +37,10 @@ function generateFakeCurrencyPairDataSet(count: number): CurrencyPair[] {
   return dataSet;
 }
 
+const dataSet = generateFakeCurrencyPairDataSet(PAIR_COUNT);
+
 export function getCurrencyPairs(): Promise<Array<CurrencyPair>> {
-  return new Promise((resolve) =>
-    setTimeout(() => resolve(generateFakeCurrencyPairDataSet(PAIR_COUNT)), 550)
-  );
+  return new Promise((resolve) => setTimeout(() => resolve(dataSet), 550));
 }
 
 export function getFxQuotes(): Promise<Array<DynamicCurrencyPair>> {
@@ -57,10 +58,34 @@ export function getFxQuotes(): Promise<Array<DynamicCurrencyPair>> {
 
   const newData = currencyPairs.reduce((prev, cur) => {
     const pairs = getPairs();
-    const curAs = cur;
-    const newPair = { ...curAs, ...pairs };
+    const newPair = { ...cur, ...pairs };
     return [...prev, newPair];
   }, [] as Array<DynamicCurrencyPair>);
 
   return new Promise((resolve) => setTimeout(() => resolve(newData), 555));
+}
+
+export function getCurrencyPairLive(): Observable<Array<CurrencyPair>> {
+  return interval(5000).pipe(
+    map(() => {
+      return dataSet.map((pair) => {
+        let lastPrice = pair.lastPrice;
+        let net = pair.net;
+
+        if (Math.random() < 0.1) {
+          lastPrice = parseFloat(faker.finance.amount(1, 2, 4));
+        } else if (Math.random() < 0.2) {
+          net = parseFloat(faker.finance.amount(-0.5, 0.5, 4));
+        }
+        const netChange = lastPrice + net;
+
+        return {
+          ...pair,
+          lastPrice,
+          net,
+          netChange,
+        };
+      });
+    })
+  );
 }

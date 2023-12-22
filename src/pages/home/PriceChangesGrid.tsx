@@ -40,21 +40,21 @@ const PriceChangesGrid: FC = () => {
   }
 
   useEffect(() => {
-    const firstSub = getStockDataLive()
+    const initialLoadSubscription = getStockDataLive()
       .pipe(first())
       .subscribe((data) => {
         gridApi.current?.setRowData(data);
       });
 
-    const sub = getStockDataLive()
+    const subscription = getStockDataLive()
       .pipe(skip(1))
       .subscribe((data) => {
         gridApi.current?.applyTransaction({ update: data });
       });
 
     return () => {
-      firstSub.unsubscribe();
-      sub.unsubscribe();
+      initialLoadSubscription.unsubscribe();
+      subscription.unsubscribe();
     };
   }, []);
 

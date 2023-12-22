@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useRef } from "react";
 import {
   ColDef,
   ColumnApi,
@@ -9,7 +9,7 @@ import {
 import { styled } from "@mui/material/styles";
 import AppGrid from "../../components/AppGrid";
 import { topMoversGridColDefs } from "./GridColDefs";
-import { CurrencyPair, getCurrencyPairs } from "../../api/CurrencyPair";
+import { getCurrencyPairLive, getCurrencyPairs } from "../../api/CurrencyPair";
 
 const StyledGrid = styled("div")`
   height: 100%;
@@ -18,7 +18,6 @@ const StyledGrid = styled("div")`
 const TopMoversGrid: FC = () => {
   const columnApi = useRef<ColumnApi>();
   const gridApi = useRef<GridApi>();
-  const [rowData, setRowData] = useState<Array<CurrencyPair>>([]);
   const colDefs = useRef<Array<ColDef>>(topMoversGridColDefs);
   const defaultColDef = useMemo<ColDef>(
     () => ({
@@ -40,13 +39,21 @@ const TopMoversGrid: FC = () => {
   }
 
   useEffect(() => {
-    getCurrencyPairs().then((data) => setRowData(data));
+    getCurrencyPairs().then((data) => {
+      gridApi.current?.setRowData(data);
+    });
+
+    const subscription = getCurrencyPairLive().subscribe((data) => {
+      gridApi.current?.applyTransaction({ update: data });
+    });
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
   return (
     <StyledGrid>
       <AppGrid
-        rowData={rowData}
         columnDefs={colDefs.current}
         defaultColDef={defaultColDef}
         animateRows={true}

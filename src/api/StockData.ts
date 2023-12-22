@@ -14,14 +14,24 @@ export interface StockData {
   netChangePercentage: number;
 }
 
+const calculateNetChange = (price: number, bid: number, ask: number) => {
+  const net = price - bid;
+  const netChange = ask - bid;
+  const netChangePercentage = netChange / 100;
+
+  return { net, netChange, netChangePercentage };
+};
+
 const generateFakeStockDataPoints = () => {
   const price = parseFloat(faker.finance.amount(50, 3000, 2));
   const bid = parseFloat(faker.finance.amount(50, price, 2));
   const ask = parseFloat(faker.finance.amount(price, 3000, 2));
 
-  const net = price - bid;
-  const netChange = ask - bid;
-  const netChangePercentage = netChange / 100;
+  const { net, netChange, netChangePercentage } = calculateNetChange(
+    price,
+    bid,
+    ask
+  );
 
   return { price, bid, ask, net, netChange, netChangePercentage };
 };
@@ -54,10 +64,25 @@ const dataset = generateFakeStockDataSet();
 
 export function getStockDataLive() {
   return interval(1000).pipe(
-    map(() =>
-      dataset.map((stockData) => {
-        const { price, bid, ask, net, netChange, netChangePercentage } =
-          generateFakeStockDataPoints();
+    map(() => {
+      return dataset.map((stockData) => {
+        let price = stockData.price;
+        let bid = stockData.bid;
+        let ask = stockData.ask;
+
+        if (Math.random() < 0.1) {
+          price = parseFloat(faker.finance.amount(50, 3000, 2));
+        } else if (Math.random() < 0.2) {
+          bid = parseFloat(faker.finance.amount(50, price, 2));
+        } else if (Math.random() < 0.3) {
+          ask = parseFloat(faker.finance.amount(price, 3000, 2));
+        }
+
+        const { net, netChange, netChangePercentage } = calculateNetChange(
+          price,
+          bid,
+          ask
+        );
 
         return {
           ...stockData,
@@ -68,7 +93,7 @@ export function getStockDataLive() {
           netChange,
           netChangePercentage,
         };
-      })
-    )
+      });
+    })
   );
 }

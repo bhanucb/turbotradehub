@@ -9,7 +9,11 @@ import {
 import { styled } from "@mui/material/styles";
 import AppGrid from "../../components/AppGrid";
 import { fxQuoteMatrixColDefs } from "./GridColDefs";
-import { DynamicCurrencyPair, getFxQuotes } from "../../api/CurrencyPair";
+import {
+  DynamicCurrencyPair,
+  getFxQuotes,
+  getFxQuotesLive,
+} from "../../api/CurrencyPair";
 
 const StyledGrid = styled("div")`
   height: 100%;
@@ -54,6 +58,15 @@ const FxQuoteMatrix: FC = () => {
 
       setRowData(data);
     });
+  }, []);
+
+  useEffect(() => {
+    const sub = getFxQuotesLive().subscribe((data) => {
+      console.log(data);
+      gridApi.current?.applyTransaction({ update: data });
+    });
+
+    return () => sub.unsubscribe();
   }, []);
 
   return (

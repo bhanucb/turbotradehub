@@ -11,7 +11,7 @@ export interface CurrencyPair {
 
 export type DynamicCurrencyPair = CurrencyPair | { [key in string]: number };
 
-const PAIR_COUNT = 100;
+const PAIR_COUNT = 1;
 
 function generateFakeCurrencyPairData(): CurrencyPair {
   const id = faker.datatype.uuid();
@@ -43,30 +43,8 @@ export function getCurrencyPairs(): Promise<Array<CurrencyPair>> {
   return new Promise((resolve) => setTimeout(() => resolve(dataSet), 550));
 }
 
-export function getFxQuotes(): Promise<Array<DynamicCurrencyPair>> {
-  const currencyPairs = generateFakeCurrencyPairDataSet(PAIR_COUNT);
-  const symbols = currencyPairs
-    .map((c) => c.symbol)
-    .sort((a, b) => a.localeCompare(b));
-
-  const getPairs = () =>
-    symbols.reduce((prev, cur) => {
-      const symbol = cur.toLowerCase();
-      const next = { [symbol]: parseFloat(faker.finance.amount(1, 2, 4)) };
-      return { ...prev, ...next };
-    }, {} as { [key in string]: number });
-
-  const newData = currencyPairs.reduce((prev, cur) => {
-    const pairs = getPairs();
-    const newPair = { ...cur, ...pairs };
-    return [...prev, newPair];
-  }, [] as Array<DynamicCurrencyPair>);
-
-  return new Promise((resolve) => setTimeout(() => resolve(newData), 555));
-}
-
 export function getCurrencyPairLive(): Observable<Array<CurrencyPair>> {
-  return interval(5000).pipe(
+  return interval(1000).pipe(
     map(() => {
       return dataSet.map((pair) => {
         let lastPrice = pair.lastPrice;
@@ -86,6 +64,41 @@ export function getCurrencyPairLive(): Observable<Array<CurrencyPair>> {
           netChange,
         };
       });
+    })
+  );
+}
+
+const getPairs = (symbols: Array<string>) =>
+  symbols.reduce((prev, cur) => {
+    const symbol = cur.toLowerCase();
+    const value = parseFloat(faker.finance.amount(1, 2, 4));
+    const next = { [symbol]: value };
+    return { ...prev, ...next };
+  }, {} as { [key in string]: number });
+
+function generateDynamicPairs(
+  currencyPairs: Array<CurrencyPair>
+): Array<DynamicCurrencyPair> {
+  const symbols = currencyPairs
+    .map((c) => c.symbol)
+    .sort((a, b) => a.localeCompare(b));
+
+  return currencyPairs.reduce((prev, cur) => {
+    const pairs = getPairs(symbols);
+    const newPair = { ...cur, ...pairs };
+    return [...prev, newPair];
+  }, [] as Array<DynamicCurrencyPair>);
+}
+
+export function getFxQuotes(): Promise<Array<DynamicCurrencyPair>> {
+  const newData = generateDynamicPairs(dataSet);
+  return new Promise((resolve) => setTimeout(() => resolve(newData), 555));
+}
+
+export function getFxQuotesLive() {
+  return getCurrencyPairLive().pipe(
+    map((pairs) => {
+      return generateDynamicPairs(pairs);
     })
   );
 }

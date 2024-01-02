@@ -63,10 +63,12 @@ const TickerDataChart: FC = () => {
   const [history, setHistory] = useState<Array<TickerHistoryData>>([]);
   const {
     symbol,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     name,
     lastPrice,
     change,
     changePercent,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     sector,
     ...otherTickerData
   } = tickerData;
@@ -74,8 +76,7 @@ const TickerDataChart: FC = () => {
   useEffect(() => {
     getTickerData("AMZUS").then((data) => {
       const { history, ...otherFields } = data;
-      const historyData = history;
-      setHistory(historyData);
+      setHistory(history);
       setTickerData(otherFields);
     });
   }, []);

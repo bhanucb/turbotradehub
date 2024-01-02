@@ -68,7 +68,7 @@ const FxQuoteMatrix: FC = () => {
 
       setRowData(data);
     });
-  }, []);
+  }, [dynamicColDefs]);
 
   useEffect(() => {
     const sub = getFxQuotesLive().subscribe((data) => {

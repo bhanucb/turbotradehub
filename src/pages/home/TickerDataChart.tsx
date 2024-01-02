@@ -104,7 +104,7 @@ const TickerDataChart: FC = () => {
   return (
     <StyledChart>
       <Box>
-        <Stack direction="row" spacing={2} alignItems="flex-end">
+        <Stack direction="row" spacing={2} alignItems="flex-end" mb={2}>
           <Typography variant="h5">{symbol}</Typography>
           <Typography variant="h4" className="last-price">
             {lastPrice}

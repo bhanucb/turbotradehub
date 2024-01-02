@@ -9,7 +9,7 @@ export interface CurrencyPair {
   netChange: number;
 }
 
-const PAIR_COUNT = 10;
+const PAIR_COUNT = 100;
 
 function generateFakeCurrencyPairData(): CurrencyPair {
   const id = faker.datatype.uuid();

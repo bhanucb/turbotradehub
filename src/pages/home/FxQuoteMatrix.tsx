@@ -13,7 +13,7 @@ import {
   DynamicCurrencyPair,
   getFxQuotes,
   getFxQuotesLive,
-} from "../../api/CurrencyPair";
+} from "../../api/DynamicCurrencyPair";
 
 const StyledGrid = styled("div")`
   height: 100%;
@@ -62,7 +62,6 @@ const FxQuoteMatrix: FC = () => {
 
   useEffect(() => {
     const sub = getFxQuotesLive().subscribe((data) => {
-      console.log(data);
       gridApi.current?.applyTransaction({ update: data });
     });
 

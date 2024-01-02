@@ -9,9 +9,7 @@ export interface CurrencyPair {
   netChange: number;
 }
 
-export type DynamicCurrencyPair = CurrencyPair | { [key in string]: number };
-
-const PAIR_COUNT = 1;
+const PAIR_COUNT = 10;
 
 function generateFakeCurrencyPairData(): CurrencyPair {
   const id = faker.datatype.uuid();
@@ -37,68 +35,39 @@ function generateFakeCurrencyPairDataSet(count: number): CurrencyPair[] {
   return dataSet;
 }
 
-const dataSet = generateFakeCurrencyPairDataSet(PAIR_COUNT);
+export const currencyPairs = generateFakeCurrencyPairDataSet(PAIR_COUNT);
+
+export const updateCurrencyPair = (pair: CurrencyPair): CurrencyPair => {
+  let lastPrice = pair.lastPrice;
+  let net = pair.net;
+
+  if (Math.random() < 0.1) {
+    lastPrice = parseFloat(faker.finance.amount(1, 2, 4));
+  } else if (Math.random() < 0.2) {
+    net = parseFloat(faker.finance.amount(-0.5, 0.5, 4));
+  }
+  const netChange = lastPrice + net;
+
+  return {
+    ...pair,
+    lastPrice,
+    net,
+    netChange,
+  };
+};
 
 export function getCurrencyPairs(): Promise<Array<CurrencyPair>> {
-  return new Promise((resolve) => setTimeout(() => resolve(dataSet), 550));
-}
-
-export function getCurrencyPairLive(): Observable<Array<CurrencyPair>> {
-  return interval(1000).pipe(
-    map(() => {
-      return dataSet.map((pair) => {
-        let lastPrice = pair.lastPrice;
-        let net = pair.net;
-
-        if (Math.random() < 0.1) {
-          lastPrice = parseFloat(faker.finance.amount(1, 2, 4));
-        } else if (Math.random() < 0.2) {
-          net = parseFloat(faker.finance.amount(-0.5, 0.5, 4));
-        }
-        const netChange = lastPrice + net;
-
-        return {
-          ...pair,
-          lastPrice,
-          net,
-          netChange,
-        };
-      });
-    })
+  return new Promise((resolve) =>
+    setTimeout(() => resolve(currencyPairs), 550)
   );
 }
 
-const getPairs = (symbols: Array<string>) =>
-  symbols.reduce((prev, cur) => {
-    const symbol = cur.toLowerCase();
-    const value = parseFloat(faker.finance.amount(1, 2, 4));
-    const next = { [symbol]: value };
-    return { ...prev, ...next };
-  }, {} as { [key in string]: number });
-
-function generateDynamicPairs(
-  currencyPairs: Array<CurrencyPair>
-): Array<DynamicCurrencyPair> {
-  const symbols = currencyPairs
-    .map((c) => c.symbol)
-    .sort((a, b) => a.localeCompare(b));
-
-  return currencyPairs.reduce((prev, cur) => {
-    const pairs = getPairs(symbols);
-    const newPair = { ...cur, ...pairs };
-    return [...prev, newPair];
-  }, [] as Array<DynamicCurrencyPair>);
-}
-
-export function getFxQuotes(): Promise<Array<DynamicCurrencyPair>> {
-  const newData = generateDynamicPairs(dataSet);
-  return new Promise((resolve) => setTimeout(() => resolve(newData), 555));
-}
-
-export function getFxQuotesLive() {
-  return getCurrencyPairLive().pipe(
-    map((pairs) => {
-      return generateDynamicPairs(pairs);
+export function getCurrencyPairLive(): Observable<Array<CurrencyPair>> {
+  return interval(2000).pipe(
+    map(() => {
+      return currencyPairs.map((pair) => {
+        return updateCurrencyPair(pair);
+      });
     })
   );
 }

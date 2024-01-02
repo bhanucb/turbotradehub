@@ -72,7 +72,7 @@ export function getFxQuotesLive(): Observable<Array<DynamicCurrencyPair>> {
         const newPairs = symbolKeys.reduce((prev, symbol) => {
           const rand = Math.random();
           const value =
-            rand < 0.8
+            rand < 0.98
               ? (pairs as { [key in string]: number })[symbol]
               : parseFloat(faker.finance.amount(1, 2, 4));
           const next = { [symbol]: value };

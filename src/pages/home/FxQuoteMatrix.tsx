@@ -33,6 +33,15 @@ const FxQuoteMatrix: FC = () => {
     }),
     []
   );
+  const dynamicColDefs = useMemo<ColDef>(
+    () => ({
+      enableCellChangeFlash: true,
+      valueFormatter: (params) => {
+        return params.value.toFixed(2);
+      },
+    }),
+    []
+  );
 
   const handleGridReady = useCallback((e: GridReadyEvent) => {
     gridApi.current = e.api;
@@ -52,6 +61,7 @@ const FxQuoteMatrix: FC = () => {
           ({
             headerName: currencyPair.toUpperCase(),
             field: currencyPair,
+            ...dynamicColDefs,
           } as ColDef)
       );
       setColDefs([...fxQuoteMatrixColDefs, ...defs]);

@@ -25,6 +25,7 @@ const TopMoversGrid: FC = () => {
       minWidth: 100,
       resizable: true,
       sortable: true,
+      cellRenderer: "agAnimateShowChangeCellRenderer",
     }),
     []
   );

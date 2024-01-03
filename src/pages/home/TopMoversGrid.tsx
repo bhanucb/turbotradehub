@@ -8,18 +8,17 @@ import {
 } from "ag-grid-community";
 import { styled } from "@mui/material/styles";
 import AppGrid from "../../components/AppGrid";
-import { getStockDataLive } from "../../api/StockData";
-import { pricingChangesGridColDefs } from "./GridColDefs";
-import { first, skip } from "rxjs";
+import { topMoversGridColDefs } from "./GridColDefs";
+import { getCurrencyPairLive, getCurrencyPairs } from "../../api/CurrencyPair";
 
 const StyledGrid = styled("div")`
   height: 100%;
 `;
 
-const PriceChangesGrid: FC = () => {
+const TopMoversGrid: FC = () => {
   const columnApi = useRef<ColumnApi>();
   const gridApi = useRef<GridApi>();
-  const colDefs = useRef<Array<ColDef>>(pricingChangesGridColDefs);
+  const colDefs = useRef<Array<ColDef>>(topMoversGridColDefs);
   const defaultColDef = useMemo<ColDef>(
     () => ({
       flex: 1,
@@ -41,20 +40,14 @@ const PriceChangesGrid: FC = () => {
   }
 
   useEffect(() => {
-    const initialLoadSubscription = getStockDataLive()
-      .pipe(first())
-      .subscribe((data) => {
-        gridApi.current?.setRowData(data);
-      });
+    getCurrencyPairs().then((data) => {
+      gridApi.current?.setRowData(data);
+    });
 
-    const subscription = getStockDataLive()
-      .pipe(skip(1))
-      .subscribe((data) => {
-        gridApi.current?.applyTransaction({ update: data });
-      });
-
+    const subscription = getCurrencyPairLive().subscribe((data) => {
+      gridApi.current?.applyTransaction({ update: data });
+    });
     return () => {
-      initialLoadSubscription.unsubscribe();
       subscription.unsubscribe();
     };
   }, []);
@@ -72,4 +65,4 @@ const PriceChangesGrid: FC = () => {
   );
 };
 
-export default PriceChangesGrid;
+export default TopMoversGrid;

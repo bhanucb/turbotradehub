@@ -10,17 +10,18 @@ export const numberFormatter = (props: ValueFormatterParams) => {
     case "string":
       value = Number(props.value);
       break;
-    case "object":
+    case "object": {
       const { value: insideValue } = props.value;
       if (insideValue === undefined || insideValue === null) {
         return props.value;
       }
       value = Number(props.value);
       break;
+    }
   }
 
   try {
-    return value.toFixed(3)?.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+    return value.toFixed(2)?.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
   } catch (e) {
     return value;
   }

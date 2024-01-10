@@ -6,7 +6,7 @@ import { persistor, store } from "./state/Store";
 import { PersistGate } from "redux-persist/integration/react";
 import { Provider as ReduxProvider } from "react-redux";
 
-export const BASENAME = "/turbo-trade-hub";
+export const BASENAME = "/";
 
 const Loader: FC = () => {
   return <div>Loading...</div>;

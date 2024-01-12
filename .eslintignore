@@ -1,0 +1,4 @@
+**/Formaters.ts
+**/vite.config.ts
+/dist/*
+.eslintrc.cjs

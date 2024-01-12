@@ -5,6 +5,7 @@ import {
   GetRowIdParams,
   GridApi,
   GridReadyEvent,
+  ValueFormatterParams,
 } from "ag-grid-community";
 import { styled } from "@mui/material/styles";
 import AppGrid from "../../components/AppGrid";
@@ -36,8 +37,10 @@ const CurrencyPairMatrix: FC = () => {
   const dynamicColDefs = useMemo<ColDef>(
     () => ({
       enableCellChangeFlash: true,
-      valueFormatter: (params) => {
-        return params.value.toFixed(2);
+      valueFormatter: (
+        params: ValueFormatterParams<DynamicCurrencyPair, number>
+      ) => {
+        return params.value ? params.value.toFixed(2) : "";
       },
     }),
     []
@@ -49,25 +52,28 @@ const CurrencyPairMatrix: FC = () => {
   }, []);
 
   function getRowId(params: GetRowIdParams) {
-    return params.data.id;
+    return (params.data as DynamicCurrencyPair).id.toString();
   }
 
   useEffect(() => {
-    getFxQuotes().then((data) => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { id, symbol, net, netChange, lastPrice, ...otherFields } = data[0];
-      const defs = Object.keys(otherFields).map(
-        (currencyPair) =>
-          ({
-            headerName: currencyPair.toUpperCase(),
-            field: currencyPair,
-            ...dynamicColDefs,
-          } as ColDef)
-      );
-      setColDefs([...fxQuoteMatrixColDefs, ...defs]);
+    getFxQuotes()
+      .then((data) => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { id, symbol, net, netChange, lastPrice, ...otherFields } =
+          data[0];
+        const defs = Object.keys(otherFields).map(
+          (currencyPair) =>
+            ({
+              headerName: currencyPair.toUpperCase(),
+              field: currencyPair,
+              ...dynamicColDefs,
+            } as ColDef)
+        );
+        setColDefs([...fxQuoteMatrixColDefs, ...defs]);
 
-      setRowData(data);
-    });
+        setRowData(data);
+      })
+      .catch((e) => console.error(e));
   }, [dynamicColDefs]);
 
   useEffect(() => {

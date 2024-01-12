@@ -19,13 +19,13 @@ const DrawerHeader = styled(Box)`
   }
 `;
 
-export type RightDrawerApi = {
+export interface RightDrawerApi {
   toggleDrawer: () => void;
-};
+}
 
-export type RightDrawerProps = {
+export interface RightDrawerProps {
   onReady?: (props: { api: RightDrawerApi }) => void;
-};
+}
 
 const RightDrawer: FC<RightDrawerProps> = (props) => {
   const [open, setOpen] = useState(false);
@@ -33,7 +33,7 @@ const RightDrawer: FC<RightDrawerProps> = (props) => {
   useEffect(() => {
     const { onReady } = props;
     onReady?.({ api: { toggleDrawer: toggleDrawer } });
-  }, []);
+  }, [props]);
 
   function toggleDrawer() {
     setOpen((prev) => !prev);

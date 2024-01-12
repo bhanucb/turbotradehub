@@ -28,5 +28,6 @@ const AppGrid = forwardRef(
     );
   }
 );
+AppGrid.displayName = "AppGrid";
 
 export default AppGrid;

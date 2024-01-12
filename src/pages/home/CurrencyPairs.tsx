@@ -9,7 +9,11 @@ import {
 import { styled } from "@mui/material/styles";
 import AppGrid from "../../components/AppGrid";
 import { topMoversGridColDefs } from "./GridColDefs";
-import { getCurrencyPairLive, getCurrencyPairs } from "../../api/CurrencyPair";
+import {
+  CurrencyPair,
+  getCurrencyPairLive,
+  getCurrencyPairs,
+} from "../../api/CurrencyPair";
 import { DEFAULT_COLUMN_DEFINITIONS } from "../../utils/Grid";
 
 const StyledGrid = styled("div")`
@@ -27,13 +31,15 @@ const CurrencyPairs: FC = () => {
   }, []);
 
   function getRowId(params: GetRowIdParams) {
-    return params.data.id;
+    return (params.data as CurrencyPair).id;
   }
 
   useEffect(() => {
-    getCurrencyPairs().then((data) => {
-      gridApi.current?.setRowData(data);
-    });
+    getCurrencyPairs()
+      .then((data) => {
+        gridApi.current?.setRowData(data);
+      })
+      .catch((e) => console.error(e));
 
     const subscription = getCurrencyPairLive().subscribe((data) => {
       gridApi.current?.applyTransaction({ update: data });

@@ -32,7 +32,7 @@ const AppTheme: FC<PropsWithChildren> = ({ children }) => {
     return () => {
       prefersDark.onchange = null;
     };
-  }, [themeButtonState]);
+  }, [dispatch, themeButtonState]);
 
   return (
     <ThemeProvider theme={darkTheme}>

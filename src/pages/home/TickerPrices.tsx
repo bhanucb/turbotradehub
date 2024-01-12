@@ -8,7 +8,7 @@ import {
 } from "ag-grid-community";
 import { styled } from "@mui/material/styles";
 import AppGrid from "../../components/AppGrid";
-import { getStockDataLive } from "../../api/StockData";
+import { getStockDataLive, StockData } from "../../api/StockData";
 import { pricingChangesGridColDefs } from "./GridColDefs";
 import { first, skip } from "rxjs";
 import { DEFAULT_COLUMN_DEFINITIONS } from "../../utils/Grid";
@@ -28,7 +28,7 @@ const TickerPrices: FC = () => {
   }, []);
 
   function getRowId(params: GetRowIdParams) {
-    return params.data.id;
+    return (params.data as StockData).id;
   }
 
   useEffect(() => {

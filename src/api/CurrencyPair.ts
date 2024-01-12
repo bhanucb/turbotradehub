@@ -56,13 +56,13 @@ export const updateCurrencyPair = (pair: CurrencyPair): CurrencyPair => {
   };
 };
 
-export function getCurrencyPairs(): Promise<Array<CurrencyPair>> {
+export function getCurrencyPairs(): Promise<CurrencyPair[]> {
   return new Promise((resolve) =>
     setTimeout(() => resolve(currencyPairs), 550)
   );
 }
 
-export function getCurrencyPairLive(): Observable<Array<CurrencyPair>> {
+export function getCurrencyPairLive(): Observable<CurrencyPair[]> {
   return interval(2000).pipe(
     map(() => {
       return currencyPairs.map((pair) => {

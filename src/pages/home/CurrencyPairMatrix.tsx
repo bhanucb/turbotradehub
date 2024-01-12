@@ -19,11 +19,11 @@ const StyledGrid = styled("div")`
   height: 100%;
 `;
 
-const FxQuoteMatrix: FC = () => {
+const CurrencyPairMatrix: FC = () => {
   const columnApi = useRef<ColumnApi>();
   const gridApi = useRef<GridApi>();
-  const [rowData, setRowData] = useState<Array<DynamicCurrencyPair>>([]);
-  const [colDefs, setColDefs] = useState<Array<ColDef>>(fxQuoteMatrixColDefs);
+  const [rowData, setRowData] = useState<DynamicCurrencyPair[]>([]);
+  const [colDefs, setColDefs] = useState<ColDef[]>(fxQuoteMatrixColDefs);
   const defaultColDef = useMemo<ColDef>(
     () => ({
       flex: 1,
@@ -92,4 +92,4 @@ const FxQuoteMatrix: FC = () => {
   );
 };
 
-export default FxQuoteMatrix;
+export default CurrencyPairMatrix;

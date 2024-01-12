@@ -2,10 +2,10 @@ import { FC } from "react";
 import { styled } from "@mui/material/styles";
 import { Box, Paper } from "@mui/material";
 import { NAVIGATION_BAR_HEIGHT } from "../../navigation/Constants";
-import PriceChangesGrid from "./PriceChangesGrid";
-import TickerDataChart from "./TickerDataChart";
-import FxQuoteMatrix from "./FxQuoteMatrix";
-import TopMoversGrid from "./TopMoversGrid";
+import TickerPrices from "./TickerPrices";
+import TickerPriceBreakdown from "./TickerPriceBreakdown";
+import CurrencyPairMatrix from "./CurrencyPairMatrix";
+import CurrencyPairs from "./CurrencyPairs";
 
 const Page = styled(Paper)`
   height: calc(100vh - (${NAVIGATION_BAR_HEIGHT}px));
@@ -50,18 +50,18 @@ const Home: FC = () => {
     <Page>
       <Box className="row top">
         <Box className="column left">
-          <TickerDataChart />
+          <TickerPriceBreakdown />
         </Box>
         <Box className="column right">
-          <PriceChangesGrid />
+          <TickerPrices />
         </Box>
       </Box>
       <Box className="row bottom">
         <Box className="column left">
-          <FxQuoteMatrix />
+          <CurrencyPairMatrix />
         </Box>
         <Box className="column right">
-          <TopMoversGrid />
+          <CurrencyPairs />
         </Box>
       </Box>
     </Page>

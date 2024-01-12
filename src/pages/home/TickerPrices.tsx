@@ -16,10 +16,10 @@ const StyledGrid = styled("div")`
   height: 100%;
 `;
 
-const PriceChangesGrid: FC = () => {
+const TickerPrices: FC = () => {
   const columnApi = useRef<ColumnApi>();
   const gridApi = useRef<GridApi>();
-  const colDefs = useRef<Array<ColDef>>(pricingChangesGridColDefs);
+  const colDefs = useRef<ColDef[]>(pricingChangesGridColDefs);
   const defaultColDef = useMemo<ColDef>(
     () => ({
       flex: 1,
@@ -72,4 +72,4 @@ const PriceChangesGrid: FC = () => {
   );
 };
 
-export default PriceChangesGrid;
+export default TickerPrices;

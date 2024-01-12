@@ -15,7 +15,7 @@ const StyledGrid = styled("div")`
   height: 100%;
 `;
 
-const TopMoversGrid: FC = () => {
+const CurrencyPairs: FC = () => {
   const columnApi = useRef<ColumnApi>();
   const gridApi = useRef<GridApi>();
   const colDefs = useRef<Array<ColDef>>(topMoversGridColDefs);
@@ -65,4 +65,4 @@ const TopMoversGrid: FC = () => {
   );
 };
 
-export default TopMoversGrid;
+export default CurrencyPairs;

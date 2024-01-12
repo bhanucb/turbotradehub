@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useMemo, useRef } from "react";
+import { FC, useCallback, useEffect, useRef } from "react";
 import {
   ColDef,
   ColumnApi,
@@ -11,6 +11,7 @@ import AppGrid from "../../components/AppGrid";
 import { getStockDataLive } from "../../api/StockData";
 import { pricingChangesGridColDefs } from "./GridColDefs";
 import { first, skip } from "rxjs";
+import { DEFAULT_COLUMN_DEFINITIONS } from "../../utils/Grid";
 
 const StyledGrid = styled("div")`
   height: 100%;
@@ -20,16 +21,6 @@ const TickerPrices: FC = () => {
   const columnApi = useRef<ColumnApi>();
   const gridApi = useRef<GridApi>();
   const colDefs = useRef<ColDef[]>(pricingChangesGridColDefs);
-  const defaultColDef = useMemo<ColDef>(
-    () => ({
-      flex: 1,
-      minWidth: 100,
-      resizable: true,
-      sortable: true,
-      cellRenderer: "agAnimateShowChangeCellRenderer",
-    }),
-    []
-  );
 
   const handleGridReady = useCallback((e: GridReadyEvent) => {
     gridApi.current = e.api;
@@ -63,7 +54,7 @@ const TickerPrices: FC = () => {
     <StyledGrid>
       <AppGrid
         columnDefs={colDefs.current}
-        defaultColDef={defaultColDef}
+        defaultColDef={DEFAULT_COLUMN_DEFINITIONS}
         animateRows={true}
         getRowId={getRowId}
         onGridReady={handleGridReady}

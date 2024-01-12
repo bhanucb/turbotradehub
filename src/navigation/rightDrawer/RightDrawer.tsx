@@ -29,11 +29,11 @@ export interface RightDrawerProps {
 
 const RightDrawer: FC<RightDrawerProps> = (props) => {
   const [open, setOpen] = useState(false);
+  const { onReady } = props;
 
   useEffect(() => {
-    const { onReady } = props;
     onReady?.({ api: { toggleDrawer: toggleDrawer } });
-  }, [props]);
+  }, []);
 
   function toggleDrawer() {
     setOpen((prev) => !prev);

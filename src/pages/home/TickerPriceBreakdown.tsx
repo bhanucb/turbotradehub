@@ -50,7 +50,7 @@ const StyledChart = styled(Box)`
 `;
 
 const TickerPriceBreakdown: FC = () => {
-  const { isMobile, isLargeDesktop } = useMobile();
+  const { isMobile, isTablet, isDesktop } = useMobile();
   const [tickerData, setTickerData] = useState<Omit<TickerInfo, "history">>(
     {} as TickerInfo
   );
@@ -153,7 +153,7 @@ const TickerPriceBreakdown: FC = () => {
           <ResponsiveContainer width={"100%"} height={isMobile ? 200 : 400}>
             <LineChart
               data={history}
-              margin={{ left: isLargeDesktop ? 8 : -24 }}
+              margin={{ left: isMobile || isTablet || isDesktop ? -24 : 16 }}
             >
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="date" />

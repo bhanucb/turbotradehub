@@ -27,7 +27,7 @@ const Home: FC = () => {
           overflow: { xs: "initial", lg: "hidden" },
         }}
       >
-        <Box>
+        <Box sx={{ flex: 2 }}>
           <TickerPriceBreakdown />
         </Box>
         <Box sx={{ flex: 1 }}>
@@ -42,7 +42,7 @@ const Home: FC = () => {
           overflow: { xs: "initial", lg: "hidden" },
         }}
       >
-        <Box sx={{ flex: 1 }}>
+        <Box sx={{ flex: 2 }}>
           <CurrencyPairMatrix />
         </Box>
         <Box sx={{ flex: 1 }}>

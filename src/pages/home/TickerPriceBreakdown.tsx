@@ -129,8 +129,8 @@ const TickerPriceBreakdown: FC = () => {
         </Typography>
       </Stack>
       <Grid container>
-        <Grid xs={12} md={3}>
-          <Stack>
+        <Grid xs={12} lg={3}>
+          <Stack minWidth={250}>
             {Object.entries(otherTickerData).map(([key, value], index) => {
               const formattedValue =
                 typeof value === "number" ? value.toLocaleString() : value;
@@ -149,11 +149,11 @@ const TickerPriceBreakdown: FC = () => {
             })}
           </Stack>
         </Grid>
-        <Grid xs={12} md={9}>
-          <ResponsiveContainer width={"100%"} minHeight={200}>
+        <Grid xs={12} lg={9} mt={{ xs: 4, lg: 0 }}>
+          <ResponsiveContainer width={"100%"} height={400}>
             <LineChart
               data={history}
-              margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+              // margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
             >
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="date" />

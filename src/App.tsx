@@ -6,15 +6,13 @@ import { persistor, store } from "./state/Store";
 import { PersistGate } from "redux-persist/integration/react";
 import { Provider as ReduxProvider } from "react-redux";
 
-export const BASENAME = "/";
-
 const Loader: FC = () => {
   return <div>Loading...</div>;
 };
 
 function App() {
   return (
-    <BrowserRouter basename={BASENAME}>
+    <BrowserRouter>
       <ReduxProvider store={store}>
         <PersistGate loading={<Loader />} persistor={persistor}>
           <AppTheme>

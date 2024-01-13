@@ -11,8 +11,8 @@ import { BASENAME } from "../App";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { NAVBAR_LINKS } from "./NavigationRoutes";
 import AppLogo from "../components/AppLogo";
+import { NAVBAR_LINKS } from "./Constants";
 
 function NavigationBar() {
   const [rightDrawerApi, setRightDrawerApi] = useState<RightDrawerApi>();

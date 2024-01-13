@@ -5,6 +5,7 @@ import {
   GetRowIdParams,
   GridApi,
   GridReadyEvent,
+  ValueFormatterParams,
 } from "ag-grid-community";
 import { styled } from "@mui/material/styles";
 import AppGrid from "../../components/AppGrid";
@@ -19,11 +20,11 @@ const StyledGrid = styled("div")`
   height: 100%;
 `;
 
-const FxQuoteMatrix: FC = () => {
+const CurrencyPairMatrix: FC = () => {
   const columnApi = useRef<ColumnApi>();
   const gridApi = useRef<GridApi>();
-  const [rowData, setRowData] = useState<Array<DynamicCurrencyPair>>([]);
-  const [colDefs, setColDefs] = useState<Array<ColDef>>(fxQuoteMatrixColDefs);
+  const [rowData, setRowData] = useState<DynamicCurrencyPair[]>([]);
+  const [colDefs, setColDefs] = useState<ColDef[]>(fxQuoteMatrixColDefs);
   const defaultColDef = useMemo<ColDef>(
     () => ({
       flex: 1,
@@ -36,8 +37,10 @@ const FxQuoteMatrix: FC = () => {
   const dynamicColDefs = useMemo<ColDef>(
     () => ({
       enableCellChangeFlash: true,
-      valueFormatter: (params) => {
-        return params.value.toFixed(2);
+      valueFormatter: (
+        params: ValueFormatterParams<DynamicCurrencyPair, number>
+      ) => {
+        return params.value ? params.value.toFixed(2) : "";
       },
     }),
     []
@@ -49,25 +52,28 @@ const FxQuoteMatrix: FC = () => {
   }, []);
 
   function getRowId(params: GetRowIdParams) {
-    return params.data.id;
+    return (params.data as DynamicCurrencyPair).id.toString();
   }
 
   useEffect(() => {
-    getFxQuotes().then((data) => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { id, symbol, net, netChange, lastPrice, ...otherFields } = data[0];
-      const defs = Object.keys(otherFields).map(
-        (currencyPair) =>
-          ({
-            headerName: currencyPair.toUpperCase(),
-            field: currencyPair,
-            ...dynamicColDefs,
-          } as ColDef)
-      );
-      setColDefs([...fxQuoteMatrixColDefs, ...defs]);
+    getFxQuotes()
+      .then((data) => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { id, symbol, net, netChange, lastPrice, ...otherFields } =
+          data[0];
+        const defs = Object.keys(otherFields).map(
+          (currencyPair) =>
+            ({
+              headerName: currencyPair.toUpperCase(),
+              field: currencyPair,
+              ...dynamicColDefs,
+            } as ColDef)
+        );
+        setColDefs([...fxQuoteMatrixColDefs, ...defs]);
 
-      setRowData(data);
-    });
+        setRowData(data);
+      })
+      .catch((e) => console.error(e));
   }, [dynamicColDefs]);
 
   useEffect(() => {
@@ -92,4 +98,4 @@ const FxQuoteMatrix: FC = () => {
   );
 };
 
-export default FxQuoteMatrix;
+export default CurrencyPairMatrix;

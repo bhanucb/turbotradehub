@@ -3,12 +3,10 @@ import NavigationBar from "./NavigationBar";
 import NotFound from "../pages/starter/NotFound";
 import Home from "../pages/home/Home";
 
-export type IpaRoute = {
+export interface IpaRoute {
   path: string;
   name: string;
-};
-
-export const NAVBAR_LINKS: Array<IpaRoute> = [{ path: "/", name: "Home" }];
+}
 
 function PageWithNavigationBar() {
   return (

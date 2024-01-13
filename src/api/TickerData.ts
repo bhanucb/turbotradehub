@@ -24,7 +24,7 @@ export interface TickerInfo {
   beta: number;
   expenseRatio: number;
   inceptionDate: string;
-  history: Array<TickerHistoryData>;
+  history: TickerHistoryData[];
 }
 
 export interface TickerHistoryData {
@@ -35,7 +35,7 @@ export interface TickerHistoryData {
 
 function generateFakeTickerInfo(
   symbol: string,
-  history: Array<TickerHistoryData>
+  history: TickerHistoryData[]
 ): TickerInfo {
   return {
     symbol,

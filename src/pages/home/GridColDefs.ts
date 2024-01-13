@@ -1,9 +1,9 @@
-import { ColDef } from "ag-grid-community";
+import { ColDef, ValueFormatterParams } from "ag-grid-community";
 import { StockData } from "../../api/StockData";
 import { CurrencyPair } from "../../api/CurrencyPair";
 import { numberFormatter } from "../../utils/Formaters";
 
-export const pricingChangesGridColDefs: Array<ColDef<StockData>> = [
+export const pricingChangesGridColDefs: ColDef<StockData>[] = [
   { headerName: "Symbol", field: "symbol", sort: "asc", minWidth: 150 },
   {
     headerName: "Price",
@@ -14,24 +14,27 @@ export const pricingChangesGridColDefs: Array<ColDef<StockData>> = [
   { headerName: "Ask", field: "ask", valueFormatter: numberFormatter },
 ];
 
-export const topMoversGridColDefs: Array<ColDef<CurrencyPair>> = [
+export const topMoversGridColDefs: ColDef<CurrencyPair>[] = [
   { headerName: "Symbol", field: "symbol" },
   { headerName: "Last", field: "lastPrice", valueFormatter: numberFormatter },
   {
     headerName: "Net",
     field: "net",
-    valueFormatter: (params) => (params.value ? params.value.toFixed(2) : null),
+    valueFormatter: (params: ValueFormatterParams<CurrencyPair, number>) =>
+      params.value ? params.value.toFixed(2) : "",
   },
   {
     headerName: "% NC",
     field: "netChange",
     sort: "desc",
-    valueFormatter: (params) =>
-      params.value ? `${params.value.toFixed(2)}%` : params.value,
+    valueFormatter: (params: ValueFormatterParams<CurrencyPair, number>) =>
+      params.value
+        ? `${params.value.toFixed(2)}%`
+        : params.value?.toString() ?? "",
   },
 ];
 
-export const fxQuoteMatrixColDefs: Array<ColDef<CurrencyPair>> = [
+export const fxQuoteMatrixColDefs: ColDef<CurrencyPair>[] = [
   { headerName: "Symbol", field: "symbol", sort: "asc" },
   {
     headerName: "Last",
@@ -43,13 +46,16 @@ export const fxQuoteMatrixColDefs: Array<ColDef<CurrencyPair>> = [
     headerName: "Net",
     field: "net",
     cellRenderer: "agAnimateShowChangeCellRenderer",
-    valueFormatter: (params) => (params.value ? params.value.toFixed(2) : null),
+    valueFormatter: (params: ValueFormatterParams<CurrencyPair, number>) =>
+      params.value ? params.value.toFixed(2) : "",
   },
   {
     headerName: "% NC",
     field: "netChange",
     cellRenderer: "agAnimateShowChangeCellRenderer",
-    valueFormatter: (params) =>
-      params.value ? `${params.value.toFixed(2)}%` : params.value,
+    valueFormatter: (params: ValueFormatterParams<CurrencyPair, number>) =>
+      params.value
+        ? `${params.value.toFixed(2)}%`
+        : params.value?.toString() ?? "",
   },
 ];

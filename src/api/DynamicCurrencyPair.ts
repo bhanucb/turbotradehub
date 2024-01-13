@@ -8,7 +8,7 @@ import faker from "faker";
 
 export type DynamicCurrencyPair = CurrencyPair | { [key in string]: number };
 
-const getPairs = (symbols: Array<string>) =>
+const getPairs = (symbols: string[]) =>
   symbols.reduce((prev, cur) => {
     const symbol = cur.toLowerCase();
     const value = parseFloat(faker.finance.amount(1, 2, 4));
@@ -17,8 +17,8 @@ const getPairs = (symbols: Array<string>) =>
   }, {} as { [key in string]: number });
 
 function generateDynamicPairs(
-  currencyPairs: Array<CurrencyPair>
-): Array<DynamicCurrencyPair> {
+  currencyPairs: CurrencyPair[]
+): DynamicCurrencyPair[] {
   const symbols = currencyPairs
     .map((c) => c.symbol)
     .sort((a, b) => a.localeCompare(b));
@@ -27,10 +27,10 @@ function generateDynamicPairs(
     const pairs = getPairs(symbols);
     const newPair = { ...cur, ...pairs };
     return [...prev, newPair];
-  }, [] as Array<DynamicCurrencyPair>);
+  }, [] as DynamicCurrencyPair[]);
 }
 
-export function getFxQuotes(): Promise<Array<DynamicCurrencyPair>> {
+export function getFxQuotes(): Promise<DynamicCurrencyPair[]> {
   const newData = generateDynamicPairs(currencyPairs);
   return new Promise((resolve) => setTimeout(() => resolve(newData), 555));
 }
@@ -53,11 +53,11 @@ function createDynamicPair(pair: CurrencyPair): DynamicCurrencyPair {
   };
 }
 
-const dataSet: Array<DynamicCurrencyPair> = currencyPairs.map((pair) =>
+const dataSet: DynamicCurrencyPair[] = currencyPairs.map((pair) =>
   createDynamicPair(pair)
 );
 
-export function getFxQuotesLive(): Observable<Array<DynamicCurrencyPair>> {
+export function getFxQuotesLive(): Observable<DynamicCurrencyPair[]> {
   return interval(1000).pipe(
     map(() => {
       return dataSet.map((dynamicPair) => {

@@ -56,11 +56,11 @@ const StyledChart = styled(Box)`
   }
 `;
 
-const TickerDataChart: FC = () => {
+const TickerPriceBreakdown: FC = () => {
   const [tickerData, setTickerData] = useState<Omit<TickerInfo, "history">>(
     {} as TickerInfo
   );
-  const [history, setHistory] = useState<Array<TickerHistoryData>>([]);
+  const [history, setHistory] = useState<TickerHistoryData[]>([]);
   const {
     symbol,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -74,11 +74,13 @@ const TickerDataChart: FC = () => {
   } = tickerData;
 
   useEffect(() => {
-    getTickerData("AMZUS").then((data) => {
-      const { history, ...otherFields } = data;
-      setHistory(history);
-      setTickerData(otherFields);
-    });
+    getTickerData("AMZUS")
+      .then((data) => {
+        const { history, ...otherFields } = data;
+        setHistory(history);
+        setTickerData(otherFields);
+      })
+      .catch((e) => console.error(e));
   }, []);
 
   const CustomTooltip = ({
@@ -179,4 +181,4 @@ const TickerDataChart: FC = () => {
   );
 };
 
-export default TickerDataChart;
+export default TickerPriceBreakdown;

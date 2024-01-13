@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useMemo, useRef } from "react";
+import { FC, useCallback, useEffect, useRef } from "react";
 import {
   ColDef,
   ColumnApi,
@@ -9,26 +9,21 @@ import {
 import { styled } from "@mui/material/styles";
 import AppGrid from "../../components/AppGrid";
 import { topMoversGridColDefs } from "./GridColDefs";
-import { getCurrencyPairLive, getCurrencyPairs } from "../../api/CurrencyPair";
+import {
+  CurrencyPair,
+  getCurrencyPairLive,
+  getCurrencyPairs,
+} from "../../api/CurrencyPair";
+import { DEFAULT_COLUMN_DEFINITIONS } from "../../utils/Grid";
 
 const StyledGrid = styled("div")`
   height: 100%;
 `;
 
-const TopMoversGrid: FC = () => {
+const CurrencyPairs: FC = () => {
   const columnApi = useRef<ColumnApi>();
   const gridApi = useRef<GridApi>();
-  const colDefs = useRef<Array<ColDef>>(topMoversGridColDefs);
-  const defaultColDef = useMemo<ColDef>(
-    () => ({
-      flex: 1,
-      minWidth: 100,
-      resizable: true,
-      sortable: true,
-      cellRenderer: "agAnimateShowChangeCellRenderer",
-    }),
-    []
-  );
+  const colDefs = useRef<ColDef[]>(topMoversGridColDefs);
 
   const handleGridReady = useCallback((e: GridReadyEvent) => {
     gridApi.current = e.api;
@@ -36,13 +31,15 @@ const TopMoversGrid: FC = () => {
   }, []);
 
   function getRowId(params: GetRowIdParams) {
-    return params.data.id;
+    return (params.data as CurrencyPair).id;
   }
 
   useEffect(() => {
-    getCurrencyPairs().then((data) => {
-      gridApi.current?.setRowData(data);
-    });
+    getCurrencyPairs()
+      .then((data) => {
+        gridApi.current?.setRowData(data);
+      })
+      .catch((e) => console.error(e));
 
     const subscription = getCurrencyPairLive().subscribe((data) => {
       gridApi.current?.applyTransaction({ update: data });
@@ -56,7 +53,7 @@ const TopMoversGrid: FC = () => {
     <StyledGrid>
       <AppGrid
         columnDefs={colDefs.current}
-        defaultColDef={defaultColDef}
+        defaultColDef={DEFAULT_COLUMN_DEFINITIONS}
         animateRows={true}
         getRowId={getRowId}
         onGridReady={handleGridReady}
@@ -65,4 +62,4 @@ const TopMoversGrid: FC = () => {
   );
 };
 
-export default TopMoversGrid;
+export default CurrencyPairs;

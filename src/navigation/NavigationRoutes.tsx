@@ -3,11 +3,6 @@ import NavigationBar from "./NavigationBar";
 import NotFound from "../pages/starter/NotFound";
 import Home from "../pages/home/Home";
 
-export interface IpaRoute {
-  path: string;
-  name: string;
-}
-
 function PageWithNavigationBar() {
   return (
     <>
@@ -22,8 +17,8 @@ function NavigationRoutes() {
     <Routes>
       <Route element={<PageWithNavigationBar />}>
         <Route path="/" element={<Home />} />
+        <Route path="*" element={<NotFound />} />
       </Route>
-      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }

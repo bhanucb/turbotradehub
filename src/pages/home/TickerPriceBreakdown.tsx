@@ -21,10 +21,9 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Unstable_Grid2";
 import { Paper, Stack } from "@mui/material";
 import { camelCaseToTitleCase } from "../../utils/Misc";
+import useMobile from "../../hooks/UseMobile";
 
 const StyledChart = styled(Box)`
-  //height: 100%;
-  //overflow: auto;
   padding: 16px;
 
   .last-price {
@@ -51,6 +50,7 @@ const StyledChart = styled(Box)`
 `;
 
 const TickerPriceBreakdown: FC = () => {
+  const { isMobile, isLargeDesktop } = useMobile();
   const [tickerData, setTickerData] = useState<Omit<TickerInfo, "history">>(
     {} as TickerInfo
   );
@@ -150,10 +150,10 @@ const TickerPriceBreakdown: FC = () => {
           </Stack>
         </Grid>
         <Grid xs={12} lg={9} mt={{ xs: 4, lg: 0 }}>
-          <ResponsiveContainer width={"100%"} height={400}>
+          <ResponsiveContainer width={"100%"} height={isMobile ? 200 : 400}>
             <LineChart
               data={history}
-              // margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+              margin={{ left: isLargeDesktop ? 8 : -24 }}
             >
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="date" />
@@ -165,6 +165,7 @@ const TickerPriceBreakdown: FC = () => {
                 dataKey="lastPrice"
                 stroke="#8884d8"
                 activeDot={{ r: 8 }}
+                name="Last Price"
               />
             </LineChart>
           </ResponsiveContainer>

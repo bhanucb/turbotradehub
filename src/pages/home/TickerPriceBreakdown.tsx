@@ -23,8 +23,8 @@ import { Paper, Stack } from "@mui/material";
 import { camelCaseToTitleCase } from "../../utils/Misc";
 
 const StyledChart = styled(Box)`
-  height: 100%;
-  overflow: auto;
+  //height: 100%;
+  //overflow: auto;
   padding: 16px;
 
   .last-price {

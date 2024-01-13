@@ -17,18 +17,36 @@ const Home: FC = () => {
     <Paper
       sx={{
         height: {
-          xs: `calc(100vh - ${XS_NAVIGATION_BAR_HEIGHT}px)`,
-          md: `calc(100vh - ${MD_NAVIGATION_BAR_HEIGHT}px)`,
+          xs: "100%",
+          lg: `calc(100vh - ${MD_NAVIGATION_BAR_HEIGHT}px)`,
         },
         display: "flex",
         flexDirection: "column",
       }}
     >
-      <Box sx={{ flex: 1, overflow: { xs: "initial", md: "hidden" } }}>
-        <TickerPriceBreakdown />
+      <Box
+        sx={{
+          flex: 1,
+          display: "flex",
+          flexDirection: { xs: "column", lg: "row" },
+          overflow: { xs: "initial", lg: "hidden" },
+        }}
+      >
+        <Box>
+          <TickerPriceBreakdown />
+        </Box>
+        <Box sx={{ flex: 1 }}>
+          <TickerPrices />
+        </Box>
       </Box>
-      <Box sx={{ flex: 1, bgcolor: "blue", overflow: "hidden" }}>
-        {/*<Grid container>*/}
+      <Box
+        sx={{
+          flex: 1,
+          bgcolor: "blue",
+          overflow: { xs: "initial", lg: "hidden" },
+        }}
+      >
+        5{/*<Grid container>*/}
         {/*  <Grid xs={12} md={6}>*/}
         {/*<CurrencyPairMatrix />*/}
         {/*  </Grid>*/}

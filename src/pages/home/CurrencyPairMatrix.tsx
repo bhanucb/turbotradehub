@@ -7,7 +7,6 @@ import {
   GridReadyEvent,
   ValueFormatterParams,
 } from "ag-grid-community";
-import { styled } from "@mui/material/styles";
 import AppGrid from "../../components/AppGrid";
 import { fxQuoteMatrixColDefs } from "./GridColDefs";
 import {
@@ -15,10 +14,7 @@ import {
   getFxQuotes,
   getFxQuotesLive,
 } from "../../api/DynamicCurrencyPair";
-
-const StyledGrid = styled("div")`
-  height: 100%;
-`;
+import Box from "@mui/material/Box";
 
 const CurrencyPairMatrix: FC = () => {
   const columnApi = useRef<ColumnApi>();
@@ -85,7 +81,7 @@ const CurrencyPairMatrix: FC = () => {
   }, []);
 
   return (
-    <StyledGrid>
+    <Box sx={{ height: { xs: "400px", lg: "100%" }, padding: 2 }}>
       <AppGrid
         rowData={rowData}
         columnDefs={colDefs}
@@ -94,7 +90,7 @@ const CurrencyPairMatrix: FC = () => {
         getRowId={getRowId}
         onGridReady={handleGridReady}
       />
-    </StyledGrid>
+    </Box>
   );
 };
 

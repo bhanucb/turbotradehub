@@ -6,16 +6,12 @@ import {
   GridApi,
   GridReadyEvent,
 } from "ag-grid-community";
-import { styled } from "@mui/material/styles";
 import AppGrid from "../../components/AppGrid";
 import { getStockDataLive, StockData } from "../../api/StockData";
 import { pricingChangesGridColDefs } from "./GridColDefs";
 import { first, skip } from "rxjs";
 import { DEFAULT_COLUMN_DEFINITIONS } from "../../utils/Grid";
-
-const StyledGrid = styled("div")`
-  height: 100%;
-`;
+import Box from "@mui/material/Box";
 
 const TickerPrices: FC = () => {
   const columnApi = useRef<ColumnApi>();
@@ -51,7 +47,7 @@ const TickerPrices: FC = () => {
   }, []);
 
   return (
-    <StyledGrid>
+    <Box sx={{ height: { xs: "400px", lg: "100%" }, padding: 2 }}>
       <AppGrid
         columnDefs={colDefs.current}
         defaultColDef={DEFAULT_COLUMN_DEFINITIONS}
@@ -59,7 +55,7 @@ const TickerPrices: FC = () => {
         getRowId={getRowId}
         onGridReady={handleGridReady}
       />
-    </StyledGrid>
+    </Box>
   );
 };
 

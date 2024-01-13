@@ -1,70 +1,55 @@
 import { FC } from "react";
-import { styled } from "@mui/material/styles";
-import { Box, Paper } from "@mui/material";
-import { NAVIGATION_BAR_HEIGHT } from "../../navigation/Constants";
-import TickerPrices from "./TickerPrices";
+import { Paper } from "@mui/material";
+import { MD_NAVIGATION_BAR_HEIGHT } from "../../navigation/Constants";
 import TickerPriceBreakdown from "./TickerPriceBreakdown";
+import TickerPrices from "./TickerPrices";
 import CurrencyPairMatrix from "./CurrencyPairMatrix";
 import CurrencyPairs from "./CurrencyPairs";
-
-const Page = styled(Paper)`
-  height: calc(100vh - (${NAVIGATION_BAR_HEIGHT}px));
-  border-radius: 0;
-  display: flex;
-  flex-direction: column;
-
-  .row {
-    display: flex;
-    height: 50%;
-
-    &.top {
-      margin-top: 16px;
-      margin-bottom: 8px;
-    }
-
-    &.bottom {
-      margin-bottom: 16px;
-      margin-top: 8px;
-    }
-  }
-
-  .column {
-    overflow: auto;
-
-    &.left {
-      width: 70%;
-      margin-left: 16px;
-      margin-right: 8px;
-    }
-
-    &.right {
-      width: 30%;
-      margin-right: 16px;
-      margin-left: 8px;
-    }
-  }
-`;
+import Box from "@mui/material/Box";
 
 const Home: FC = () => {
   return (
-    <Page>
-      <Box className="row top">
-        <Box className="column left">
+    <Paper
+      sx={{
+        height: {
+          xs: "100%",
+          lg: `calc(100vh - ${MD_NAVIGATION_BAR_HEIGHT}px)`,
+        },
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <Box
+        sx={{
+          flex: 1,
+          display: "flex",
+          flexDirection: { xs: "column", lg: "row" },
+          overflow: { xs: "initial", lg: "hidden" },
+        }}
+      >
+        <Box sx={{ flex: 2 }}>
           <TickerPriceBreakdown />
         </Box>
-        <Box className="column right">
+        <Box sx={{ flex: 1 }}>
           <TickerPrices />
         </Box>
       </Box>
-      <Box className="row bottom">
-        <Box className="column left">
+      <Box
+        sx={{
+          flex: 1,
+          display: "flex",
+          flexDirection: { xs: "column", lg: "row" },
+          overflow: { xs: "initial", lg: "hidden" },
+        }}
+      >
+        <Box sx={{ flex: 2 }}>
           <CurrencyPairMatrix />
         </Box>
-        <Box className="column right">
+        <Box sx={{ flex: 1 }}>
           <CurrencyPairs />
         </Box>
       </Box>
-    </Page>
+    </Paper>
   );
 };
 

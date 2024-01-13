@@ -1,1 +1,2 @@
-export const NAVIGATION_BAR_HEIGHT = 64;
+export const XS_NAVIGATION_BAR_HEIGHT = 56;
+export const MD_NAVIGATION_BAR_HEIGHT = 64;

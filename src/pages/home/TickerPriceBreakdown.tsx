@@ -9,6 +9,7 @@ import {
   Legend,
   Line,
   LineChart,
+  ResponsiveContainer,
   Tooltip,
   TooltipProps,
   XAxis,
@@ -20,11 +21,10 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Unstable_Grid2";
 import { Paper, Stack } from "@mui/material";
 import { camelCaseToTitleCase } from "../../utils/Misc";
+import useMobile from "../../hooks/UseMobile";
 
 const StyledChart = styled(Box)`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
+  padding: 16px;
 
   .last-price {
     font-weight: bold;
@@ -35,13 +35,6 @@ const StyledChart = styled(Box)`
 
   .positive-change {
     color: green;
-  }
-
-  .grid {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    overflow: hidden;
   }
 
   .tooltip {
@@ -57,6 +50,7 @@ const StyledChart = styled(Box)`
 `;
 
 const TickerPriceBreakdown: FC = () => {
+  const { isMobile, isTablet, isDesktop } = useMobile();
   const [tickerData, setTickerData] = useState<Omit<TickerInfo, "history">>(
     {} as TickerInfo
   );
@@ -106,37 +100,37 @@ const TickerPriceBreakdown: FC = () => {
 
   return (
     <StyledChart>
-      <Box>
-        <Stack direction="row" spacing={2} alignItems="flex-end" mb={2}>
-          <Typography variant="h5">{symbol}</Typography>
-          <Typography variant="h4" className="last-price">
-            {lastPrice}
-          </Typography>
-          <Typography
-            variant="h6"
-            className={change < 0 ? "negative-change" : "positive-change"}
-          >
-            {change > 0 && "+"}
-            {change}
-          </Typography>
-          <Typography
-            variant="h6"
-            className={
-              changePercent < 0 ? "negative-change" : "positive-change"
-            }
-          >
-            ({changePercent > 0 && "+"}
-            {changePercent}%)
-          </Typography>
-        </Stack>
-        {/*<Stack direction="row" spacing={2} alignItems="flex-end">*/}
-        {/*  <Typography variant="h6">{name}</Typography>*/}
-        {/*  <Typography variant="h6">{camelCaseToTitleCase(sector)}</Typography>*/}
-        {/*</Stack>*/}
-      </Box>
-      <Grid container spacing={2} className="stat-grid">
-        <Grid xs={3}>
-          <Stack>
+      <Stack
+        direction={{ xs: "row", sm: "row" }}
+        justifyContent={{ xs: "center", md: "flex-start" }}
+        spacing={{ xs: 1, md: 4 }}
+        alignItems="flex-end"
+        useFlexGap
+        flexWrap="wrap"
+        mb={2}
+      >
+        <Typography variant="h5">{symbol}</Typography>
+        <Typography variant="h4" className="last-price">
+          {lastPrice}
+        </Typography>
+        <Typography
+          variant="h6"
+          className={change < 0 ? "negative-change" : "positive-change"}
+        >
+          {change > 0 && "+"}
+          {change}
+        </Typography>
+        <Typography
+          variant="h6"
+          className={changePercent < 0 ? "negative-change" : "positive-change"}
+        >
+          ({changePercent > 0 && "+"}
+          {changePercent}%)
+        </Typography>
+      </Stack>
+      <Grid container>
+        <Grid xs={12} lg={3}>
+          <Stack minWidth={250}>
             {Object.entries(otherTickerData).map(([key, value], index) => {
               const formattedValue =
                 typeof value === "number" ? value.toLocaleString() : value;
@@ -155,28 +149,28 @@ const TickerPriceBreakdown: FC = () => {
             })}
           </Stack>
         </Grid>
-        <Grid xs={9} className="grid">
-          <LineChart
-            width={800}
-            height={350}
-            data={history}
-            margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="date" />
-            <YAxis />
-            <Tooltip content={<CustomTooltip />} />
-            <Legend />
-            <Line
-              type="monotone"
-              dataKey="lastPrice"
-              stroke="#8884d8"
-              activeDot={{ r: 8 }}
-            />
-          </LineChart>
+        <Grid xs={12} lg={9} mt={{ xs: 4, lg: 0 }}>
+          <ResponsiveContainer width={"100%"} height={isMobile ? 200 : 400}>
+            <LineChart
+              data={history}
+              margin={{ left: isMobile || isTablet || isDesktop ? -24 : 16 }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="date" />
+              <YAxis />
+              <Tooltip content={<CustomTooltip />} />
+              <Legend />
+              <Line
+                type="monotone"
+                dataKey="lastPrice"
+                stroke="#8884d8"
+                activeDot={{ r: 8 }}
+                name="Last Price"
+              />
+            </LineChart>
+          </ResponsiveContainer>
         </Grid>
       </Grid>
-      {/*<StatGrid tickerInfo={otherTickerData} />*/}
     </StyledChart>
   );
 };

@@ -9,7 +9,7 @@ function NavigationBar() {
   return (
     <AppBar position="static" sx={{bgcolor: mode === "light" ? "#283593" : "primary"}}>
       <Toolbar>
-        <Typography variant="h6">
+        <Typography variant="h6" flexGrow={1}>
           Turbo Trade Hub
         </Typography>
 

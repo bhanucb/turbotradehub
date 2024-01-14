@@ -17,6 +17,7 @@ const Home: FC = () => {
         },
         display: "flex",
         flexDirection: "column",
+        borderRadius: 0,
       }}
     >
       <Box
